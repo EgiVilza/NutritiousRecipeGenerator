@@ -1,0 +1,86 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<html>
+
+<body>
+  
+<!-- Buttons -->
+  <label for="foodSearch">Food Search:</label>
+  <input type="text" id="foodSearch" name="foodSearch">
+
+  <br><br>
+
+  <input type="checkbox" class="restrictionBox" id="vegan" name="vegan" value="vegan">
+  <label for="vehicle1"> vegan</label><br>
+
+  <input type="checkbox" class="restrictionBox" id="vegetarian" name="vegetarian" value="vegetarian">
+  <label for="vehicle2"> vegetarian</label><br>
+
+  <input type="checkbox" class="restrictionBox" id="paleo" name="paleo" value="paleo">
+  <label for="vehicle3"> paleo</label><br>
+
+  <br><br>
+
+  <button type="button" onclick="alert('Hello world!')">Search!</button>
+
+</body>
+
+
+</html>
+
+
+<script>
+//Checks if any boxes are checked, returns true if so, false if not
+function anyRestrictions (){
+  if($(".restrictionBox").is(':checked')){
+   return true
+  }
+    else{
+   return false
+  }
+}
+//Returns an array of every checked checkbox's value
+function allChecked (){
+    var allChecked = $('.restrictionBox:checkbox:checked')
+    var allCheckedArray = []
+  for (i=0; i<allChecked.length; i++){
+  allCheckedArray.push(allChecked[i].value)
+  }
+  return allCheckedArray
+}
+
+//Transforms an array into one that is appropriate for the API in checking health restrictions
+function generateHealthString(array){
+  var healthString = ""
+  for (i=0; i<array.length; i++){
+  healthString = healthString + "&health=" + array[i]
+  }
+  return healthString  
+}
+
+// Function that queries the API
+function recipeQuery(){  
+//Grabs user input for search
+var foodSearch = $("#foodSearch").val()
+
+//Generates a string of health restrictions to be appeneded at the end of the query by passing allChecked() into generateHealthString
+var finalHealthString = ""
+var finalHealthString = generateHealthString(allChecked())
+
+//appID and key
+var appID = "349b98ef"
+var key = "5e98e5359fcce19875540fb80e3daf8a"
+var queryURL = "https://api.edamam.com/search?q=" + foodSearch + "&app_id=" + appID + "&app_key=" + key + finalHealthString
+   
+//Queries the API and console logs the response
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+
+      .then(function(response) {
+          console.log(queryURL)
+          console.log(response)
+      })
+}
+</script>
