@@ -15,11 +15,13 @@
 
 
   <br></br>
-  <br></br>
 
   <button type="button" onclick="recipeQuery()"id="searchButton">Search!</button>
   <button type="button" onclick="recipeRandomQuery()"id="searchRandomButton">Random!</button>
+  <button type="button" onclick="recipeTimeRandomQuery()"id="searchRandomTimeButton">Random Based on Hour!</button>
 
+  <div id = results>
+  </div>
 
 </body>
 
@@ -28,7 +30,11 @@
 
 
 <script>
-var healthLabelsArray = ["vegan", "vegetarian", "paleo", "dairy-free", "gluten-free", "wheat-free", "fat-free", "low-sugar", "egg-free", "peanut-free", "tree-nut-free", "soy-free", "fish-free", "shellfish-free"]
+
+//All possible labels, available to users that pay for a license
+//var healthLabelsArray = ["vegan", "vegetarian", "paleo", "dairy-free", "gluten-free", "wheat-free", "fat-free", "low-sugar", "egg-free", "peanut-free", "tree-nut-free", "soy-free", "fish-free", "shellfish-free"]
+//All labels that appear to work 
+var healthLabelsArray = ["vegan", "vegetarian", "peanut-free", "tree-nut-free","alcohol-free"]
 function generateCheckboxes(array){
 var checkboxes = ""
 for (j=0;j<array.length;j++){
@@ -101,7 +107,6 @@ var queryURL = "https://api.edamam.com/search?q=" + foodSearch + "&app_id=" + ap
       .then(function(response) {
           console.log(queryURL)
           console.log(response)
-          console.log(response.hits[0].recipe)
       })
 }
 
@@ -132,8 +137,44 @@ var queryURL = "https://api.edamam.com/search?q=" + foodSearch + "&app_id=" + ap
       .then(function(response) {
           console.log(queryURL)
           console.log(response.hits[randomUpTo(9)].recipe)
+          //$('#results').append(response.hits[randomUpTo(9)].recipe)
       })
 }
+
+function recipeTimeRandomQuery(){  
+//Grabs user input for search
+if (new Date().getHours() < 11){
+var foodSearch = "breakfast"}
+else if (new Date().getHours() > 11 && new Date().getHours() < 16 ){
+var foodSearch = "lunch"}
+else{
+var foodSearh = "dinner"
+}
+//Generates a string of health restrictions to be appeneded at the end of the query by passing allChecked() into generateHealthString
+var finalHealthString = ""
+var finalHealthString = generateHealthString(allChecked())
+
+//appID and key
+var appID = "349b98ef"
+var key = "5e98e5359fcce19875540fb80e3daf8a"
+var queryURL = "https://api.edamam.com/search?q=" + foodSearch + "&app_id=" + appID + "&app_key=" + key + finalHealthString
+   
+//Queries the API and console logs the response
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+
+      .then(function(response) {
+          console.log(queryURL)
+          console.log(response.hits[randomUpTo(9)].recipe)
+          //$('#results').append(response.hits[randomUpTo(9)].recipe)
+      })
+}
+
+
+
+
 
 //Makes the search button do searches (currently prints them to console)
 //Nevermind this button doesn't work for some reason you have to type recipeQuery() into the console to send it
