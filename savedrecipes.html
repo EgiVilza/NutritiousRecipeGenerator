@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>My Saved Recipes</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <h1>Saved Recipes</h1>
+            <h6>Check out the recipes you've saved for later, including required ingredients.</h6>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <ul id="recipe-container" class="collapsible expandable">
+                <!-- <li>
+                    <div class="collapsible-header"><i class="material-icons">arrow_drop_down</i>First</div>
+                    <div class="collapsible-body">
+                        <span>
+                        </span>
+                    </div>
+                </li> -->
+
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script type="text/javascript">
+        var elem = document.querySelector('.collapsible.expandable');
+        var instance = M.Collapsible.init(elem, {
+            accordion: false
+        });
+
+        // var appID = "349b98ef"
+        // var key = "5e98e5359fcce19875540fb80e3daf8a"
+        // var queryURL = "https://api.edamam.com/search?q=" + "chicken parm" + "&app_id=" + appID + "&app_key=" + key
+
+        // $.ajax({
+        //     url: queryURL,
+        //     method: "GET"
+        // })
+
+        //     .then(function (response) {
+        //         console.log(queryURL)
+        //         localStorage.setItem("recipe", JSON.stringify(response.hits[0]));
+        //         console.log(response)
+        //         console.log(response.hits[0])
+
+        //     })
+
+        //get stored recipe from local storage
+        var storedRecipe = JSON.parse(localStorage.getItem("recipe"));
+        console.log(storedRecipe);
+        //save ingredients and recipe title to variables
+        var ingredients = storedRecipe.recipe.ingredientLines
+        var title = storedRecipe.recipe.label
+
+        //select container element
+        var container = $("#recipe-container");
+        //create and append new list item
+        var newRecipe = $("<li>");
+        container.append(newRecipe);
+
+        //create and append header div
+        var header = $("<div>");
+        newRecipe.append(header);
+        header.addClass("collapsible-header");
+        header.text(title)
+
+        //create and append body div
+        var body = $("<div>");
+        newRecipe.append(body);
+        body.addClass("collapsible-body");
+        body.text(ingredients)
+
+
+
+
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
