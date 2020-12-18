@@ -9,19 +9,17 @@
   <input type="text" id="foodSearch" name="foodSearch">
 
   <br><br>
+  
+  <div id = healthLabelButtonContainer>
+  </div>
 
-  <input type="checkbox" class="restrictionBox" id="vegan" name="vegan" value="vegan">
-  <label for="vehicle1"> vegan</label><br>
 
-  <input type="checkbox" class="restrictionBox" id="vegetarian" name="vegetarian" value="vegetarian">
-  <label for="vehicle2"> vegetarian</label><br>
+  <br></br>
+  <br></br>
 
-  <input type="checkbox" class="restrictionBox" id="paleo" name="paleo" value="paleo">
-  <label for="vehicle3"> paleo</label><br>
+  <button type="button" onclick="recipeQuery()"id="searchButton">Search!</button>
+  <button type="button" onclick="recipeRandomQuery()"id="searchRandomButton">Random!</button>
 
-  <br><br>
-
-  <button type="button" onclick="alert('Hello world!')">Search!</button>
 
 </body>
 
@@ -30,6 +28,28 @@
 
 
 <script>
+var healthLabelsArray = ["vegan", "vegetarian", "paleo", "dairy-free", "gluten-free", "wheat-free", "fat-free", "low-sugar", "egg-free", "peanut-free", "tree-nut-free", "soy-free", "fish-free", "shellfish-free"]
+function generateCheckboxes(array){
+var checkboxes = ""
+for (j=0;j<array.length;j++){
+checkboxes += '<input type="checkbox" class="restrictionBox" id="'
+checkboxes += array[j]
+checkboxes += '" name="'
+checkboxes += array[j]
+checkboxes += '" value="'
+checkboxes += array[j]
+checkboxes += '"><label for="'
+checkboxes += "health" + j
+checkboxes += '">'
+checkboxes += array[j]
+checkboxes += '</label><br>'
+}
+$('#healthLabelButtonContainer').append(checkboxes)
+}
+
+// generates Checkboxes when page opened
+generateCheckboxes(healthLabelsArray)
+
 //Checks if any boxes are checked, returns true if so, false if not
 function anyRestrictions (){
   if($(".restrictionBox").is(':checked')){
@@ -81,6 +101,41 @@ var queryURL = "https://api.edamam.com/search?q=" + foodSearch + "&app_id=" + ap
       .then(function(response) {
           console.log(queryURL)
           console.log(response)
+          console.log(response.hits[0].recipe)
       })
 }
+
+//Generates a random integer from 0 up to the value of randomMax.
+function randomUpTo(randomMax) {
+  return ((Math.floor(Math.random() * (randomMax + 1))))
+}
+
+function recipeRandomQuery(){  
+//Grabs user input for search
+var foodSearch = $("#foodSearch").val()
+
+//Generates a string of health restrictions to be appeneded at the end of the query by passing allChecked() into generateHealthString
+var finalHealthString = ""
+var finalHealthString = generateHealthString(allChecked())
+
+//appID and key
+var appID = "349b98ef"
+var key = "5e98e5359fcce19875540fb80e3daf8a"
+var queryURL = "https://api.edamam.com/search?q=" + foodSearch + "&app_id=" + appID + "&app_key=" + key + finalHealthString
+   
+//Queries the API and console logs the response
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+
+      .then(function(response) {
+          console.log(queryURL)
+          console.log(response.hits[randomUpTo(9)].recipe)
+      })
+}
+
+//Makes the search button do searches (currently prints them to console)
+//Nevermind this button doesn't work for some reason you have to type recipeQuery() into the console to send it
+
 </script>
