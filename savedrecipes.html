@@ -41,6 +41,7 @@
             accordion: false
         });
 
+        //Saves sample recipe to local storage for testing
         // var appID = "349b98ef"
         // var key = "5e98e5359fcce19875540fb80e3daf8a"
         // var queryURL = "https://api.edamam.com/search?q=" + "chicken parm" + "&app_id=" + appID + "&app_key=" + key
@@ -61,9 +62,11 @@
         //get stored recipe from local storage
         var storedRecipe = JSON.parse(localStorage.getItem("recipe"));
         console.log(storedRecipe);
-        //save ingredients and recipe title to variables
-        var ingredients = storedRecipe.recipe.ingredientLines
+
+        //save recipe title and ingredients array to variables
         var title = storedRecipe.recipe.label
+        var ingredients = storedRecipe.recipe.ingredientLines
+        console.log(ingredients)
 
         //select container element
         var container = $("#recipe-container");
@@ -81,15 +84,31 @@
         var body = $("<div>");
         newRecipe.append(body);
         body.addClass("collapsible-body");
+<<<<<<< Updated upstream
         var list = $("<ul>");
         body.append(list);
+=======
+
+        //create and append unordered list for ingredients
+        var bodyList = $("<ul>");
+        body.append(bodyList);
+>>>>>>> Stashed changes
 
         //loop through ingredients array and add list items for each
         for (i = 0; i < ingredients.length; i++) {
             var newItem = $("<li>");
+<<<<<<< Updated upstream
             list.append(newItem);
             newItem.text(ingredients[i])
         }
+=======
+            bodyList.append(newItem)
+            newItem.text(ingredients[i])
+        }
+
+
+
+>>>>>>> Stashed changes
 
 
 
