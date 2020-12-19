@@ -1,0 +1,11 @@
+Nav bar: Home Page, World Recipes (Top recipes around the world), Advanced Search
+
+Hero Image: Paris
+
+Location Search Field (based on city)
+
+Result: Shows top recipes based on the city
+
+Ideas:
+Have pictures/buttons of city, when clicked on, it will show the top 5 recipes for each city
+

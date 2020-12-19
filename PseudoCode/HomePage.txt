@@ -1,0 +1,18 @@
+Nav bar: Home Page, World Recipes (Top recipes around the world), Advanced Search
+
+Hero: Food image (for first half of page)
+Basic Recipe Search Bar: Within the hero image
+
+Nutrition Calories
+- Image of recipe
+- Image of ingredients
+- ingredients calories and total calories
+
+Ideas:
+Animate recipe/images to appear on the webpage
+Able to alter the ingredients and update the calorie counter
+
+Recipe Finder Paths
+Food images: hits[0].recipe.image
+Total calories: hits[0].recipe.calories
+Diet Label: hits[0].recipe.dietLabels

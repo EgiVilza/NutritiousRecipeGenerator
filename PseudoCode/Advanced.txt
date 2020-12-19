@@ -1,0 +1,14 @@
+Nav bar: Home Page, World Recipes (Top recipes around the world), Advanced Search
+
+Advanced search items
+- Diet Label - check box
+- Health Label - check box
+- MealType - check box
+- Calorie Range - min, max fields
+- Cooking Time - min, max fields
+- Exclude Ingredients - text field, add to array and display the array onto the Page
+
+Ideas
+- Automatically add mealtype based on location/timezone
+- Add clear "exclude ingredients" button
+
