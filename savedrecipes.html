@@ -84,31 +84,15 @@
         var body = $("<div>");
         newRecipe.append(body);
         body.addClass("collapsible-body");
-<<<<<<< Updated upstream
         var list = $("<ul>");
         body.append(list);
-=======
-
-        //create and append unordered list for ingredients
-        var bodyList = $("<ul>");
-        body.append(bodyList);
->>>>>>> Stashed changes
 
         //loop through ingredients array and add list items for each
         for (i = 0; i < ingredients.length; i++) {
             var newItem = $("<li>");
-<<<<<<< Updated upstream
             list.append(newItem);
             newItem.text(ingredients[i])
         }
-=======
-            bodyList.append(newItem)
-            newItem.text(ingredients[i])
-        }
-
-
-
->>>>>>> Stashed changes
 
 
 
