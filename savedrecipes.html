@@ -77,14 +77,19 @@
         header.addClass("collapsible-header");
         header.text(title)
 
-        //create and append body div
+        //create and append body div, and a list container inside body
         var body = $("<div>");
         newRecipe.append(body);
         body.addClass("collapsible-body");
-        body.text(ingredients)
+        var list = $("<ul>");
+        body.append(list);
 
-
-
+        //loop through ingredients array and add list items for each
+        for (i = 0; i < ingredients.length; i++) {
+            var newItem = $("<li>");
+            list.append(newItem);
+            newItem.text(ingredients[i])
+        }
 
 
 
