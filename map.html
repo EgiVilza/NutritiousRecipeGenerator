@@ -1,28 +1,57 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<img id="map" name="map"  src="map.jpg"  alt="Map of Earth" onclick="clickMapImage(event);"/>
+<img id="map" name="map" src="map.jpg" alt="Map of Earth" onclick="clickMapImage(event);" />
 
 <script>
-function clickMapImage(event) {
+  function clickMapImage(event) {
     var xCoordinate = event.offsetX;
     var yCoordinate = event.offsetY;
-     longitude = ((xCoordinate/document.getElementById('map').width) * 360) - 180
-     latitude = 90 -((yCoordinate/document.getElementById('map').height) * 180)
+    longitude = ((xCoordinate / document.getElementById('map').width) * 360) - 180
+    latitude = 90 - ((yCoordinate / document.getElementById('map').height) * 180)
     console.log(latitude, longitude)
     //user input
-    var coordString = latitude+","+longitude
+    var coordString = latitude + "," + longitude
     //appID and key
     var key = "ec16e811d654f74e28ffe0acccf5a092"
     var queryURL = "http://api.positionstack.com/v1/reverse?access_key=" + key + "&query=" + coordString
     //              http://api.positionstack.com/v1/reverse?access_key=ec16e811d654f74e28ffe0acccf5a092&query=40.7638435,-73.9729691
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      })
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    })
 
-      .then(function(response) {
-          console.log(response.data[0].country)
+      .then(function (response) {
+        //console.log(response.data[0].country);
+        console.log(response);
+        if (response.data[0].continent === "Africa") {
+          console.log("Kosher")
+        }
+        if (response.data[0].country === "United States" || response.data[0].country === "Canada") {
+          console.log("American")
+        }
+        if (response.data[0].continent === "Asia" && response.data[0].country !== "China") {
+          console.log("Asian")
+        }
+        if (response.data[0].country === "China") {
+          console.log("Chinese")
+        }
+        if (response.data[0].country === "United Kingdom") {
+          console.log("British")
+        }
+        if (response.data[0].country === "Mexico") {
+          console.log("Mexican")
+        }
+        if (response.data[0].continent === "North America" && response.data[0].country !== "Mexico" && response.data[0].country !== "United States") {
+          console.log("Carribean")
+        }
+        if (response.data[0].continent === "Europe" && response.data[0].country === "Bulgaria" || response.data[0].country === "Czech Republic" || response.data[0].country === "Hungary" || response.data[0].country === "Poland" || response.data[0].country === "Romania" || response.data[0].country === "Russia" || response.data[0].country === "Slovakia" || response.data[0].country === "Belarus" || response.data[0].country === "Moldova" || response.data[0].country === "Ukraine") {
+          console.log("Eastern Europe")
+        } else if (response.data[0].continent === "Europe") {
+          console.log("Central Europe")
+        }
+
       })
-}
+  }
+
 
 
 </script>
