@@ -1,111 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Advanced Recipe Generator</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="style.css">
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Advanced Recipe Generator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
-    <nav>
-        <div class="nav-wrapper">
-          <a href="#" class="brand-logo">Logo</a>
-          <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">World Recipes</a></li>
-            <li><a href="#">Advanced</a></li>
-            <li><a href="#">Saved</a></li>
-          </ul>
-        </div>
-      </nav>
-
-      <div class="row">
-        <form class="col s12">
-          <div class="row">
-            <div class="input-field col s6">
-              <input id="icon_prefix" type="text" class="validate">
-              <label for="icon_prefix">Recipes</label>
-              
-            </div>
-            <div class="input-field col s6">
-                <a class="waves-effect waves-light btn">button</a>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <div class="note">Click to uncollapse</div>
-      <ul class="collapsible collapsibleStyle">
-          
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Logo</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">World Recipes</a></li>
+        <li><a href="#">Advanced</a></li>
+        <li><a href="#">Saved</a></li>
       </ul>
-    
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-      <script>
+    </div>
+  </nav>
 
-        //Materilize function for collapsible
-        $(document).ready(function(){
-        $('.collapsible').collapsible();
-        });
+  <div class="container">
+    <div class="row">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="icon_prefix" type="text" class="validate">
+            <label for="icon_prefix">Recipes</label>
 
-        
-        //foodSearchQuery
-        var foodImage = ""
-        var foodTitle = ""
-        var ingredients = []
-        var num = "2"
-        var food = "chicken"
-        var applicationID = "6c4c5067"
-        var appKey = "56dd4a4b1dc04c1107300036e876fbf8"
-        var queryURL = "https://api.edamam.com/search?q=" + food + "&app_id=" + applicationID + "&app_key=" + appKey + "&to=" + num
+          </div>
+          <div class="input-field col s6">
+            <a class="waves-effect waves-light btn">button</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 
-        $.ajax({
-        url: queryURL,
-        method: "GET"
-        }).then(function(response) {
+  <div class="container">
+    <div class="row">
+      <div id="note">Click to Uncollapse</div>
+      <ul id="recipe-container" class="collapsible expandable"></ul>
+    </div>
+  </div>
 
-            var numberofRecipes = 1
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
 
-            for (var i = 0; i <= numberofRecipes; i++) {
-                foodTitle = response.hits[i].recipe.label
-                foodImage = response.hits[i].recipe.image
-                ingredients = response.hits[i].recipe.ingredientLines
+    //Materilize function for collapsible
+    $(document).ready(function () {
+      $('.collapsible').collapsible();
+    });
 
-                //collapsable layout
-                var list = $("<li>")
-                var divTitle = $("<div>")
-                var divInfo = $("<div>")
 
-                    
-                $(".collapsible").append(list)
+    //foodSearchQuery
+    var ingredients = []
+    var num = "2"
+    var food = "chicken"
+    var applicationID = "6c4c5067"
+    var appKey = "56dd4a4b1dc04c1107300036e876fbf8"
+    var queryURL = "https://api.edamam.com/search?q=" + food + "&app_id=" + applicationID + "&app_key=" + appKey + "&to=" + num
 
-                //give common and unique id's to each div
-                divTitle.attr({ class:"collapsible-header material-icons", id:"foodHeader" + i })
-                divInfo.attr({ class:"collapsible-body", id:"foodBody" + i})
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function (response) {
 
-                list.append(divTitle)
-                list.append(divInfo)
-                
-                var foodHeader = divTitle.attr("id")
-                var foodBody = divInfo.attr("id")
+      var numberofRecipes = 5
 
-                $("#"+foodHeader).text(foodTitle)
+      for (var i = 0; i < numberofRecipes; i++) {
+        //Save recipe title, image, and ingredients array to variables
+        var foodTitle = response.hits[i].recipe.label
+        var foodImage = response.hits[i].recipe.image
+        var ingredients = response.hits[i].recipe.ingredientLines
+        var prep = response.hits[i].recipe.url
 
-                var image = $("<img>")
-                image.attr("src", foodImage)
-                $("#" + foodBody).append(image)
+        //select container element
+        var container = $("#recipe-container");
+        //create and append new list item
+        var newRecipe = $("<li>");
+        container.append(newRecipe);
 
-                var text = $("<p>")
-                text.text(ingredients)
-                $("#" + foodBody).append(text)
+        //create and append header div
+        var header = $("<div>");
+        newRecipe.append(header);
+        header.addClass("collapsible-header");
+        header.text(foodTitle)
 
-            }
-            
-        });
-        
-          
-      </script>
+        //create and append body div
+        var body = $("<div>");
+        newRecipe.append(body);
+        body.addClass("collapsible-body");
+
+        //Create and append organizing grid containers
+        var row = $("<div>");
+        var left = $("<div>");
+        var middle = $("<div>");
+        var right = $("<div>");
+        row.addClass("row");
+        left.addClass("col s4");
+        right.addClass("col s8");
+        body.append(row);
+        row.append(left);
+        row.append(right);
+
+        //Create and append image using recipe image
+        var image = $("<img>");
+        image.attr("src", foodImage);
+        left.append(image);
+
+        //Create and append "Ingredients" title
+        var ingredientTitle = $("<h5>");
+        ingredientTitle.text("Ingredients:");
+        right.append(ingredientTitle);
+
+        //Create and append a list container inside body
+        var ingredientList = $("<ul>");
+        right.append(ingredientList);
+
+        //loop through ingredients array and add list items for each
+        for (j = 0; j < ingredients.length; j++) {
+          var newItem = $("<li>");
+          ingredientList.append(newItem);
+          newItem.text(ingredients[j])
+        }
+
+        //Create and append link to preperation instructions
+        var prepTitle = $("<h5>");
+        right.append(prepTitle);
+
+        var prepLink = $("<a>");
+        prepLink.text("Preparation");
+        prepLink.attr("href", prep);
+        prepLink.addClass("blue-text text-darken-2");
+        prepTitle.append(prepLink);
+
+      }
+
+    });
+
+
+  </script>
 </body>
+
 </html>

@@ -63,10 +63,11 @@
         var storedRecipe = JSON.parse(localStorage.getItem("recipe"));
         console.log(storedRecipe);
 
-        //save recipe title and ingredients array to variables
-        var title = storedRecipe.recipe.label
+        //save recipe title, image, and ingredients array to variables
+        var foodTitle = storedRecipe.recipe.label
+        var foodImage = storedRecipe.recipe.image
         var ingredients = storedRecipe.recipe.ingredientLines
-        console.log(ingredients)
+        var prep = storedRecipe.recipe.url
 
         //select container element
         var container = $("#recipe-container");
@@ -78,21 +79,55 @@
         var header = $("<div>");
         newRecipe.append(header);
         header.addClass("collapsible-header");
-        header.text(title)
+        header.text(foodTitle)
 
-        //create and append body div, and a list container inside body
+        //create and append body div
         var body = $("<div>");
         newRecipe.append(body);
         body.addClass("collapsible-body");
-        var list = $("<ul>");
-        body.append(list);
+
+        //Create and append organizing grid containers
+        var row = $("<div>");
+        var left = $("<div>");
+        var middle = $("<div>");
+        var right = $("<div>");
+        row.addClass("row");
+        left.addClass("col s4");
+        right.addClass("col s8");
+        body.append(row);
+        row.append(left);
+        row.append(right);
+
+        //Create and append image using recipe image
+        var image = $("<img>");
+        image.attr("src", foodImage);
+        left.append(image);
+        
+        //Create and append "Ingredients" title
+        var ingredientTitle = $("<h5>");
+        ingredientTitle.text("Ingredients:");
+        right.append(ingredientTitle);
+
+        //Create and append a list container inside body
+        var ingredientList = $("<ul>");
+        right.append(ingredientList);
 
         //loop through ingredients array and add list items for each
         for (i = 0; i < ingredients.length; i++) {
             var newItem = $("<li>");
-            list.append(newItem);
+            ingredientList.append(newItem);
             newItem.text(ingredients[i])
         }
+
+        //Create and append link to preperation instructions
+        var prepTitle = $("<h5>");
+        right.append(prepTitle);
+
+        var prepLink = $("<a>");
+        prepLink.text("Preparation");
+        prepLink.attr("href", prep);
+        prepLink.addClass("blue-text text-darken-2");
+        prepTitle.append(prepLink);
 
 
 
