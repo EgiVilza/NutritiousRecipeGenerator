@@ -21,4 +21,23 @@ a:link {
     margin-left: 10%;
 }
 
+.note {
+    margin-right: 10%;
+    margin-left: 10%;
+}
+
+#map {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+   
+}
+
+.mapTitle {
+    text-align: center;
+}
+
+.mapSearch {
+    text-align: center;
+}
 
