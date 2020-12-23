@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>WorldMap Recipe Generator</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="style.css">
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WorldMap Recipe Generator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -44,112 +45,261 @@
     </form>
   </div>
 
-  <ul class="collapsible collapsibleStyle">
-          
-  </ul>
+  <div class="container">
+    <div class="row">
+      <div id="note">Click to Uncollapse</div>
+      <ul id="recipe-container" class="collapsible expandable"></ul>
+    </div>
+  </div>
 
-  <img id="map" name="map"  src="map.jpg"  alt="Map of Earth" width="900px" height="600px" onclick="clickMapImage(event);"/>
-  
+  <img id="map" name="map" src="map.jpg" alt="Map of Earth" width="900px" height="600px"
+    onclick="clickMapImage(event);" />
+
 </body>
 
 <script>
   function clickMapImage(event) {
     var xCoordinate = event.offsetX;
     var yCoordinate = event.offsetY;
-     longitude = ((xCoordinate/document.getElementById('map').width) * 360) - 180
-     latitude = 90 -((yCoordinate/document.getElementById('map').height) * 180)
+    longitude = ((xCoordinate / document.getElementById('map').width) * 360) - 180
+    latitude = 90 - ((yCoordinate / document.getElementById('map').height) * 180)
     console.log(latitude, longitude)
     //user input
-    var coordString = latitude+","+longitude
+    var coordString = latitude + "," + longitude
     //appID and key
     var key = "ec16e811d654f74e28ffe0acccf5a092"
     var queryURL = "http://api.positionstack.com/v1/reverse?access_key=" + key + "&query=" + coordString
     //              http://api.positionstack.com/v1/reverse?access_key=ec16e811d654f74e28ffe0acccf5a092&query=40.7638435,-73.9729691
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      })
-
-      .then(function(response) {
-          console.log(response)
-
-          if (response.data[0].country_code === "USA") {
-            console.log("American")
-          }
-          if (response.data[0].continent === "Asia") {
-            console.log("Asian")
-          }
-
-
-
-      })
-}
-
-//Send a query URL to the Recipe Search API
-$(document).ready(function(){
-    $('.collapsible').collapsible();
-    });
-
-    
-    //foodSearchQuery
-    var foodImage = ""
-    var foodTitle = ""
-    var ingredients = []
-    var num = "2"
-    var food = "chicken"
-    var applicationID = "6c4c5067"
-    var appKey = "56dd4a4b1dc04c1107300036e876fbf8"
-    var queryURL = "https://api.edamam.com/search?q=" + food + "&app_id=" + applicationID + "&app_key=" + appKey + "&to=" + num
-
     $.ajax({
+      url: queryURL,
+      method: "GET"
+    })
+
+      .then(function (response) {
+        console.log(response)
+
+        if (response.data[0].country_code === "USA") {
+          console.log("American")
+        }
+        if (response.data[0].continent === "Asia" && response.data[0].country_code !== "CHN") {
+          console.log("Asian")
+        }
+        if (response.data[0].country_code === "CHN") {
+          console.log("Chinese")
+        }
+        if (response.data[0].country_code === "MEX") {
+          console.log("Mexican")
+        }
+        if (response.data[0].country_code === "GBR") {
+          console.log("British")
+        }
+        if (response.data[0].continent === "North America" && response.data[0].latitude < 25.8056) {
+          console.log("Carribean")
+        }
+        if (response.data[0].name === "Gulf of Mexico" || response.data[0].name === "Caribbean Sea") {
+          console.log("Carribean")
+        }
+      })
+  }
+
+  //Send a query URL to the Recipe Search API
+  $(document).ready(function () {
+    $('.collapsible').collapsible();
+  });
+
+
+  //foodSearchQuery
+  var numberofRecipes = 5
+  var foodImage = ""
+  var foodTitle = ""
+  var codesObj = {}
+  var foodCode = ""
+  var ingredients = []
+
+  var obj = {}
+  var newArray = []
+
+  var prep = ""
+  var country = "Canadian"
+  var queryURL = "https://www.themealdb.com/api/json/v1/1/filter.php?a=" + country
+
+  $.ajax({
     url: queryURL,
     method: "GET"
-    }).then(function(response) {
+  }).then(function (response) {
+    console.log(response)
 
-        //Limits the number of results for the collapse for loop
-        var numberofRecipes = 1
+    for (var i = 0; i < numberofRecipes; i++) {
 
-        //For loop to add each recipe content into a collapsible list
-        for (var i = 0; i <= numberofRecipes; i++) {
-            foodTitle = response.hits[i].recipe.label
-            foodImage = response.hits[i].recipe.image
-            ingredients = response.hits[i].recipe.ingredientLines
+      foodTitle = response.meals[i].strMeal;
+      foodImage = response.meals[i].strMealThumb;
+      codesObj[i] = response.meals[i].idMeal;
 
-            //collapsable layout
-            var list = $("<li>")
-            //div for Title
-            var divTitle = $("<div>")
-            //div for food information
-            var divInfo = $("<div>")
+      //select container element
+      var container = $("#recipe-container");
+      //create and append new list item
+      var newRecipe = $("<li>");
+      container.append(newRecipe);
 
-            $(".collapsible").append(list)
+      //create and append header div
+      var header = $("<div>");
+      newRecipe.append(header);
+      header.addClass("collapsible-header");
+      header.text(foodTitle)
 
-            //give common and unique id's to each recipe div
-            divTitle.attr({ class:"collapsible-header material-icons", id:"foodHeader" + i })
-            divInfo.attr({ class:"collapsible-body", id:"foodBody" + i})
+      //create and append body div
+      var body = $("<div>");
+      newRecipe.append(body);
+      body.addClass("collapsible-body");
 
-            //Adds the recipe title and info to the collapse list
-            list.append(divTitle)
-            list.append(divInfo)
-            
-            //Stores unique div ID's to a variable
-            var foodHeader = divTitle.attr("id")
-            var foodBody = divInfo.attr("id")
+      //Create and append organizing grid containers
+      var row = $("<div>");
+      var left = $("<div>");
+      var middle = $("<div>");
+      var right = $("<div>");
+      row.addClass("row");
+      left.addClass("col s4");
+      right.addClass("col s8");
+      body.append(row);
+      row.append(left);
+      row.append(right);
 
-            //Adds food label to collasible div
-            $("#"+foodHeader).text(foodTitle)
+      //Create and append image using recipe image
+      var image = $("<img>");
+      image.attr("src", foodImage);
+      image.attr("width", "300px");
+      image.attr("height", "300px");
+      left.append(image);
 
-            //Adds image to collabsible div
-            var image = $("<img>")
-            image.attr("src", foodImage)
-            $("#" + foodBody).append(image)
+      //Create and append "Ingredients" title
+      var ingredientTitle = $("<h5>");
+      ingredientTitle.text("Ingredients:");
+      right.append(ingredientTitle);
 
-            //Adds the recipe ingredients to collabsible div
-            var text = $("<p>")
-            text.text(ingredients)
-            $("#" + foodBody).append(text)
+      //Create and append a list container inside body
+      var ingredientList = $("<ul>");
+      right.append(ingredientList);
 
-        }
-        
-    });
+      //Create and append link to preperation instructions
+      var prepTitle = $("<h5>");
+      right.append(prepTitle);
+
+      var prepLink = $("<a>");
+      prepLink.text("Preparation");
+      prepLink.addClass("waves-effect waves-light btn");
+      prepLink.attr("id", i);
+      prepTitle.append(prepLink);
+
+    }
+
+    console.log("-----------------------------------");
+    console.log(codesObj);
+
+    for (var i = 0; i < numberofRecipes; i++) {
+
+      var queryURL2 = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + codesObj[i]
+
+      $.ajax({
+        url: queryURL2,
+        method: "GET"
+      }).then(function (response) {
+        console.log(response);
+        console.log(indexOf(codesObj[i]))
+        prep = response.meals[0].strSource
+        console.log(prep)
+
+      });
+
+    }
+
+
+
+
+
+    // prep = response.meals[0].strSource
+
+    // //Create and append "Ingredients" title
+    // var ingredientTitle = $("<h5>");
+    // ingredientTitle.text("Ingredients:");
+    // right.append(ingredientTitle);
+
+    // //Create and append a list container inside body
+    // var ingredientList = $("<ul>");
+    // right.append(ingredientList);
+
+    // //Create ingredients array using ingredients and amounts from returned recipe
+    // var newIngredient = response.meals[0].strMeasure1 + " " + response.meals[0].strIngredient1
+    // ingredients.push(response.meals[0].strIngredienti)
+
+
+
+    // //loop through ingredients array and add list items for each
+    // for (j = 0; j < ingredients.length; j++) {
+    //   var newItem = $("<li>");
+    //   ingredientList.append(newItem);
+
+    //   newItem.text(ingredients[j])
+
+
+
+
+    // }
+
+
+
+
+
+
+
+
+
+
+    // var numberofRecipes = 1
+
+    // //For loop to add each recipe content into a collapsible list
+    // for (var i = 0; i < numberofRecipes; i++) {
+
+
+    //     ingredients = response.hits[i].recipe.ingredientLines
+
+    //     //collapsable layout
+    //     var list = $("<li>")
+    //     //div for Title
+    //     var divTitle = $("<div>")
+    //     //div for food information
+    //     var divInfo = $("<div>")
+
+    //     $(".collapsible").append(list)
+
+    //     //give common and unique id's to each recipe div
+    //     divTitle.attr({ class:"collapsible-header material-icons", id:"foodHeader" + i })
+    //     divInfo.attr({ class:"collapsible-body", id:"foodBody" + i})
+
+    //     //Adds the recipe title and info to the collapse list
+    //     list.append(divTitle)
+    //     list.append(divInfo)
+
+    //     //Stores unique div ID's to a variable
+    //     var foodHeader = divTitle.attr("id")
+    //     var foodBody = divInfo.attr("id")
+
+    //     //Adds food label to collasible div
+    //     $("#"+foodHeader).text(foodTitle)
+
+    //     //Adds image to collabsible div
+    //     var image = $("<img>")
+    //     image.attr("src", foodImage)
+    //     $("#" + foodBody).append(image)
+
+    //     //Adds the recipe ingredients to collabsible div
+    //     var text = $("<p>")
+    //     text.text(ingredients)
+    //     $("#" + foodBody).append(text)
+
+    // }
+
+
+
+  });
+
 </script>

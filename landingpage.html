@@ -60,7 +60,7 @@
     //foodSearchQuery
     var ingredients = []
     var num = "1"
-    var food = "chicken"
+    var food = "American"
     var applicationID = "6c4c5067"
     var appKey = "56dd4a4b1dc04c1107300036e876fbf8"
     var queryURL = "https://api.edamam.com/search?q=" + food + "&app_id=" + applicationID + "&app_key=" + appKey + "&to=" + num
@@ -70,7 +70,7 @@
       method: "GET"
     }).then(function (response) {
 
-      var numberofRecipes = 1
+      var numberofRecipes = 5
 
       for (var i = 0; i < numberofRecipes; i++) {
         //Save recipe title, image, and ingredients array to variables
