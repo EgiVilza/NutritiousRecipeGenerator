@@ -1,57 +1,137 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<img id="map" name="map" src="map.jpg" alt="Map of Earth" onclick="clickMapImage(event);" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WorldMap Recipe Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Recipe Generator</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">World Recipes</a></li>
+        <li><a href="#">Advanced</a></li>
+        <li><a href="#">Saved</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="mapTitle">Enter a country or click on the map to select one</div>
+
+  <div class="row mapSearch">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="icon_prefix" type="text" class="validate countryInput">
+          <label for="icon_prefix">Country</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="icon_prefix" type="text" class="validate recipeInput">
+          <label for="icon_prefix">Recipe</label>
+        </div>
+        <div class="input-field col s12">
+          <a class="waves-effect waves-light btn resultsButton">View Results</a>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <ul class="collapsible collapsibleStyle">
+          
+  </ul>
+
+  <img id="map" name="map"  src="map.jpg"  alt="Map of Earth" width="900px" height="600px" onclick="clickMapImage(event);"/>
+  
+</body>
 
 <script>
   function clickMapImage(event) {
     var xCoordinate = event.offsetX;
     var yCoordinate = event.offsetY;
-    longitude = ((xCoordinate / document.getElementById('map').width) * 360) - 180
-    latitude = 90 - ((yCoordinate / document.getElementById('map').height) * 180)
+     longitude = ((xCoordinate/document.getElementById('map').width) * 360) - 180
+     latitude = 90 -((yCoordinate/document.getElementById('map').height) * 180)
     console.log(latitude, longitude)
     //user input
-    var coordString = latitude + "," + longitude
+    var coordString = latitude+","+longitude
     //appID and key
     var key = "ec16e811d654f74e28ffe0acccf5a092"
     var queryURL = "http://api.positionstack.com/v1/reverse?access_key=" + key + "&query=" + coordString
     //              http://api.positionstack.com/v1/reverse?access_key=ec16e811d654f74e28ffe0acccf5a092&query=40.7638435,-73.9729691
-    $.ajax({
-      url: queryURL,
-      method: "GET"
-    })
-
-      .then(function (response) {
-        //console.log(response.data[0].country);
-        console.log(response);
-        if (response.data[0].continent === "Africa") {
-          console.log("Kosher")
-        }
-        if (response.data[0].country === "United States" || response.data[0].country === "Canada") {
-          console.log("American")
-        }
-        if (response.data[0].continent === "Asia" && response.data[0].country !== "China") {
-          console.log("Asian")
-        }
-        if (response.data[0].country === "China") {
-          console.log("Chinese")
-        }
-        if (response.data[0].country === "United Kingdom") {
-          console.log("British")
-        }
-        if (response.data[0].country === "Mexico") {
-          console.log("Mexican")
-        }
-        if (response.data[0].continent === "North America" && response.data[0].country !== "Mexico" && response.data[0].country !== "United States") {
-          console.log("Carribean")
-        }
-        if (response.data[0].continent === "Europe" && response.data[0].country === "Bulgaria" || response.data[0].country === "Czech Republic" || response.data[0].country === "Hungary" || response.data[0].country === "Poland" || response.data[0].country === "Romania" || response.data[0].country === "Russia" || response.data[0].country === "Slovakia" || response.data[0].country === "Belarus" || response.data[0].country === "Moldova" || response.data[0].country === "Ukraine") {
-          console.log("Eastern Europe")
-        } else if (response.data[0].continent === "Europe") {
-          console.log("Central Europe")
-        }
-
+      $.ajax({
+        url: queryURL,
+        method: "GET"
       })
-  }
 
+      .then(function(response) {
+          console.log(response.data[0].country)
+      })
+}
 
+$(document).ready(function(){
+    $('.collapsible').collapsible();
+    });
 
+    
+    //foodSearchQuery
+    var foodImage = ""
+    var foodTitle = ""
+    var ingredients = []
+    var num = "2"
+    var food = "chicken"
+    var applicationID = "6c4c5067"
+    var appKey = "56dd4a4b1dc04c1107300036e876fbf8"
+    var queryURL = "https://api.edamam.com/search?q=" + food + "&app_id=" + applicationID + "&app_key=" + appKey + "&to=" + num
+
+    $.ajax({
+    url: queryURL,
+    method: "GET"
+    }).then(function(response) {
+
+        var numberofRecipes = 1
+
+        for (var i = 0; i <= numberofRecipes; i++) {
+            foodTitle = response.hits[i].recipe.label
+            foodImage = response.hits[i].recipe.image
+            ingredients = response.hits[i].recipe.ingredientLines
+
+            //collapsable layout
+            var list = $("<li>")
+            //div for Title
+            var divTitle = $("<div>")
+            //div for food information
+            var divInfo = $("<div>")
+
+            $(".collapsible").append(list)
+
+            //give common and unique id's to each div
+            divTitle.attr({ class:"collapsible-header material-icons", id:"foodHeader" + i })
+            divInfo.attr({ class:"collapsible-body", id:"foodBody" + i})
+
+            list.append(divTitle)
+            list.append(divInfo)
+            
+            var foodHeader = divTitle.attr("id")
+            var foodBody = divInfo.attr("id")
+
+            $("#"+foodHeader).text(foodTitle)
+
+            var image = $("<img>")
+            image.attr("src", foodImage)
+            $("#" + foodBody).append(image)
+
+            var text = $("<p>")
+            text.text(ingredients)
+            $("#" + foodBody).append(text)
+
+        }
+        
+    });
 </script>
