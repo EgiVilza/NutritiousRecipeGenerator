@@ -22,15 +22,104 @@
       </nav>
 
       <div class="row">
+        <form class="col s6">
+          <div class="row">
+            <div class="input-field col s4">
+              <input id="icon_prefix" type="text" class="validate">
+              <label for="icon_prefix">Food</label>
+              
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="row">
+        <p>Health Labels:</p>
+        <label>
+          <input type="checkbox" class="filled-in" id="vegan"/>
+          <span>vegan</span>
+        </label>
+        <label>
+          <input type="checkbox" class="filled-in" id="vegetarian"/>
+          <span>vegetarian</span>
+        </label>
+        <label>
+          <input type="checkbox" class="filled-in" id="peanut-free"/>
+          <span>peanut-free</span>
+        </label>
+        <label>
+          <input type="checkbox" class="filled-in" id="tree-nut-free"/>
+          <span>tree-nut-free</span>
+        </label>
+        <label>
+          <input type="checkbox" class="filled-in" id="alcohol-free"/>
+          <span>alcohol-free</span>
+        </label>
+      </div>
+
+      <div class="row">
+        <p>Diet:</p>
+        <label>
+          <input type="checkbox" class="filled-in" id="balanced"/>
+          <span>balanced</span>
+        </label>
+        <label>
+          <input type="checkbox" class="filled-in" id="high-fiber"/>
+          <span>high-fiber</span>
+        </label>
+        <label>
+          <input type="checkbox" class="filled-in" id="high-protein"/>
+          <span>high-protein</span>
+        </label>
+        <label>
+          <input type="checkbox" class="filled-in" id="low-carb"/>
+          <span>low-carb</span>
+        </label>
+        <label>
+          <input type="checkbox" class="filled-in" id="low-fat"/>
+          <span>low-fat</span>
+        </label>
+        <label>
+          <input type="checkbox" class="filled-in" id="low-sodium"/>
+          <span>low-sodium</span>
+        </label>
+      </div>
+
+      <div class="row">
         <form class="col s12">
           <div class="row">
             <div class="input-field col s6">
-              <input id="icon_prefix" type="text" class="validate">
-              <label for="icon_prefix">Recipes</label>
-              
+              <input id="icon_prefix" type="text" class="validate minCalories">
+              <label for="icon_prefix">Calories MIN</label>
             </div>
             <div class="input-field col s6">
-                <a class="waves-effect waves-light btn">button</a>
+              <input id="icon_prefix" type="text" class="validate maxCalories">
+              <label for="icon_prefix">Calories MAX</label>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="icon_prefix" type="text" class="validate numberOfIngredients">
+              <label for="icon_prefix">Number of ingredients</label>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="icon_prefix" type="text" class="validate excluded">
+              <label for="icon_prefix">Exclude Ingredients</label>
+            </div>
+            <div class="input-field col s12">
+              <a class="waves-effect waves-light btn resultsButton">Add to list</a>
             </div>
           </div>
         </form>
@@ -44,8 +133,8 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
       <script>
-        // Or with jQuery
 
+        //Send a query URL to the Recipe Search API
         $(document).ready(function(){
         $('.collapsible').collapsible();
         });
@@ -66,8 +155,10 @@
         method: "GET"
         }).then(function(response) {
 
+            //Limits the number of results for the collapse for loop
             var numberofRecipes = 1
 
+            //For loop to add each recipe content into a collapsible list
             for (var i = 0; i <= numberofRecipes; i++) {
                 foodTitle = response.hits[i].recipe.label
                 foodImage = response.hits[i].recipe.image
@@ -86,29 +177,45 @@
                 divTitle.attr({ class:"collapsible-header material-icons", id:"foodHeader" + i })
                 divInfo.attr({ class:"collapsible-body", id:"foodBody" + i})
 
+                //Adds the recipe title and info to the collapse list
                 list.append(divTitle)
                 list.append(divInfo)
                 
+                //Stores unique div ID's to a variable
                 var foodHeader = divTitle.attr("id")
                 var foodBody = divInfo.attr("id")
 
+                //Adds food label to collasible div
                 $("#"+foodHeader).text(foodTitle)
 
+                //Adds image to collabsible div
                 var image = $("<img>")
                 image.attr("src", foodImage)
                 $("#" + foodBody).append(image)
 
+                //Adds the recipe ingredients to collabsible div
                 var text = $("<p>")
                 text.text(ingredients)
                 $("#" + foodBody).append(text)
 
             }
-            
-            //console.log(foodTitle)
-            //console.log(response.Runtime);
+
         });
+      
+        console.log($("#peanut-free").prop("checked"))
+
+        //Return a row of checkboxes
+        //When the checkboxes are clicked then it gets added onto the url
         
+        //list of options
+        //health label - checkboxes
+        //diet - checkboxes
+        //calories - two input boxes
+        //ingredients number - input box
+        //Time - maybe - two input boxes
+        //excluded - input box
           
       </script>
+      
 </body>
 </html>
