@@ -71,10 +71,21 @@
       })
 
       .then(function(response) {
-          console.log(response.data[0].country)
+          console.log(response)
+
+          if (response.data[0].country_code === "USA") {
+            console.log("American")
+          }
+          if (response.data[0].continent === "Asia") {
+            console.log("Asian")
+          }
+
+
+
       })
 }
 
+//Send a query URL to the Recipe Search API
 $(document).ready(function(){
     $('.collapsible').collapsible();
     });
@@ -95,8 +106,10 @@ $(document).ready(function(){
     method: "GET"
     }).then(function(response) {
 
+        //Limits the number of results for the collapse for loop
         var numberofRecipes = 1
 
+        //For loop to add each recipe content into a collapsible list
         for (var i = 0; i <= numberofRecipes; i++) {
             foodTitle = response.hits[i].recipe.label
             foodImage = response.hits[i].recipe.image
@@ -111,22 +124,27 @@ $(document).ready(function(){
 
             $(".collapsible").append(list)
 
-            //give common and unique id's to each div
+            //give common and unique id's to each recipe div
             divTitle.attr({ class:"collapsible-header material-icons", id:"foodHeader" + i })
             divInfo.attr({ class:"collapsible-body", id:"foodBody" + i})
 
+            //Adds the recipe title and info to the collapse list
             list.append(divTitle)
             list.append(divInfo)
             
+            //Stores unique div ID's to a variable
             var foodHeader = divTitle.attr("id")
             var foodBody = divInfo.attr("id")
 
+            //Adds food label to collasible div
             $("#"+foodHeader).text(foodTitle)
 
+            //Adds image to collabsible div
             var image = $("<img>")
             image.attr("src", foodImage)
             $("#" + foodBody).append(image)
 
+            //Adds the recipe ingredients to collabsible div
             var text = $("<p>")
             text.text(ingredients)
             $("#" + foodBody).append(text)
