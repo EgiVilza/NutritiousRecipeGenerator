@@ -23,29 +23,31 @@
     </div>
   </nav>
 
-  <div class="container">
+<div class="hero">
+  <div class="container" id="searchStyle">
     <div class="row">
       <form class="col s12">
         <div class="row">
-          <div class="input-field col s6">
+          <p id="indexTitle">Search For a Recipe!</p>
+          <div class="input-field col s10">
             <input id="icon_prefix" type="text" class="validate">
             <label for="icon_prefix">Recipes</label>
-
           </div>
-          <div class="input-field col s6">
-            <a class="waves-effect waves-light btn">button</a>
+          <div class="input-field col s2">
+            <a class="waves-effect waves-light btn searchBtn">Search</a>
           </div>
         </div>
       </form>
     </div>
   </div>
 
-  <div class="container">
+  <div class="container" id="resultStyle">
     <div class="row">
       <div id="note">Click to Uncollapse</div>
       <ul id="recipe-container" class="collapsible expandable"></ul>
     </div>
   </div>
+</div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -58,14 +60,20 @@
 
 
     //foodSearchQuery
-    var ingredients = []
-    var num = "1"
-    var food = "chicken"
-    var applicationID = "6c4c5067"
-    var appKey = "56dd4a4b1dc04c1107300036e876fbf8"
-    var queryURL = "https://api.edamam.com/search?q=" + food + "&app_id=" + applicationID + "&app_key=" + appKey + "&to=" + num
+    
 
-    $.ajax({
+    $(".searchBtn").on("click",searchCriteria)
+
+    function searchCriteria() {
+      var ingredients = []
+      var num = "1"
+      var food = $(".validate").val()
+      var applicationID = "6c4c5067"
+      var appKey = "56dd4a4b1dc04c1107300036e876fbf8"
+      var queryURL = "https://api.edamam.com/search?q=" + food + "&app_id=" + applicationID + "&app_key=" + appKey + "&to=" + num
+      console.log(food)
+
+      $.ajax({
       url: queryURL,
       method: "GET"
     }).then(function (response) {
@@ -150,12 +158,9 @@
       }
 
     });
-
-    $(".save").on("click", saveFunction)
-
-    function saveFunction() {
-
     }
+
+    
 
 
   </script>

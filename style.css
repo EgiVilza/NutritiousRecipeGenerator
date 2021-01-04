@@ -15,14 +15,17 @@ a:link {
 
 .note {
     margin-right: 10%;
-    margin-left: 10%;
+    margin-left: 10%;   
+}
+
+#note {
+    text-align: center;
 }
 
 #map {
     display: block;
     margin-left: auto;
     margin-right: auto;
-   
 }
 
 .mapTitle {
@@ -76,3 +79,35 @@ a:link {
     margin-top: -5%;
 }
 
+.hero {
+    /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+    background-image: url("pexels-lukas-349610.jpg");
+  
+    /* Set a specific height */
+    height: 900px;
+  
+    /* Position and center the image to scale nicely on all screens */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.container {
+    margin-bottom: -50px;
+    background-color: white;
+    
+}
+
+#searchStyle {
+    border-radius: 5px;
+}
+
+#resultStyle {
+    border-radius: 5px;
+}
+
+#indexTitle {
+    text-align: center;
+    font-size: 35px;
+}
