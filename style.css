@@ -1,5 +1,3 @@
- 
-
 a:link {
     text-decoration: none;
     color: black;
@@ -33,5 +31,48 @@ a:link {
 
 .mapSearch {
     text-align: center;
+}
+
+.excludedIngredints {
+    display: inline;
+    text-align: center;
+}
+
+#excludedList {
+    display: inline;
+}
+
+.advancedFilters {
+    border: solid;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.addTo {
+    margin-left: 2%;
+    text-align: left;
+}
+
+.healthLabels {
+    margin-left: 1%;
+}
+
+.diet {
+    margin-left: 1%;
+}
+
+#excludedListTitle {
+    font-size: 20px;
+    margin-top: -10%;
+    margin-bottom: 50px;
+}
+
+#advancedPageTitle {
+    text-align: center;
+    font-size: 25px;
+}
+
+.excludedListing {
+    margin-top: -5%;
 }
 
