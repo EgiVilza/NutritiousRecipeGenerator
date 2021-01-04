@@ -163,10 +163,14 @@
         $('.collapsible').collapsible();
         });
 
+        //initialize excluded list
         var excluded = []
+
+        //Excluded list content displaing on the page
         var ul = $(".excludedListing")
         var li = document.createElement("li");
-        var p = document.createElement("p")
+
+        //Button Event Listeners
         $(".searchButton").on("click", search)
         $(".addToButton").on("click", excludedFunction)
         $(".resetButton").on("click", resetList)
@@ -176,29 +180,33 @@
           var p = document.createElement("p")
           var excludedValue = $(".excluded").val()
           if (excludedValue == "") {
-
+            //If excluded value is empty, do nothing
           }
           else {
+            //if the excluded value is not already in the excluded list, the value
+            //will get added onto the list
             if (excluded.indexOf(excludedValue) == -1) {
               excluded.push(excludedValue)
             }
           }
 
+          //clears previous list
           ul.empty()
+
+          //adds new items to the excluded list that is displayed on the page
           p.append(document.createTextNode(excluded))
           ul.append(p)
         }
 
         //Reset excluded list
         function resetList() {
-          var list = document.getElementById("uList")
           ul.empty()
           excluded = []
-          
         }
 
 
         function search() {
+          //initialize variables
           var food = $(".food").val()
           var minCalories = $(".minCalories").val()
           var maxCalories = $(".maxCalories").val()
@@ -209,9 +217,11 @@
           var foodTitle = ""
           var applicationID = "564187b6"
 
+          //Health label options
           var healthLabelsArray = ["vegan","vegetarian","peanut-free",
           "tree-nut-free","alcohol-free"]
 
+          //diet label options
           var dietArray = ["balanced","high-fiber","high-protein",
           "low-carb","low-fat","low-sodium"]
   
@@ -227,18 +237,18 @@
           + appKey + "&to=" + num
 
 
-          //Health lables
+          //Health labels
+          //If any of the health label checkboxes are checked, add them to the queryURL
           for (var i = 0; i < healthLabelsArray.length; i++) {
             var healthLabel = "#" + [healthLabelsArray[i]]
             if ($(healthLabel).prop("checked") === true) {
               var label1 = healthLabelsArray[i]
               queryURL = queryURL + "&health=" + healthLabelsArray[i]
-
             }
-  
           }
           
           //Diet Labels
+          //If any of the diet label checkboxes are checked, add them to the queryURL
           for (var i = 0; i < dietArray.length; i++) {
             var dietLabel = "#" + [dietArray[i]]
             if ($(dietLabel).prop("checked") === true) {
@@ -249,17 +259,22 @@
 
         //Calories
         if (minCalories == "" && maxCalories == "") {
+          //If calorie values are empty, do nothing
         }
         else if ((minCalories != "") && (maxCalories != "")) {
+          //If both min and max calorie values are not empty, add them to the queryURL
+          //with proper "-" format
           var cal = "&calories=" + minCalories + "-" + maxCalories
           queryURL = queryURL + cal
         }
         else {
-          if (minCalories !=   "") {
+          if (minCalories != "") {
+            //If min calorie value is not empty, add to the query URL
             var cal = "&calories=" + minCalories
             queryURL = queryURL + cal
           }
           else {
+            //If min calorie value is not empty, add to the query URL
             var cal = "&calories=" + maxCalories
             queryURL = queryURL + cal
           }
@@ -267,13 +282,11 @@
 
         //Excluded
         if (excluded.length > 0) {
+          //Takes the valus of the excluded array and add them to the queryURL
           for (var i = 0; i < excluded.length; i++) {
             queryURL = queryURL + "&excluded=" + excluded[i]
           }
         }
-        
-
-        console.log(queryURL)
 
           $.ajax({
         url: queryURL,
@@ -350,6 +363,7 @@
               var prepTitle = $("<h5>");
               right.append(prepTitle);
 
+              //Added the link to the Prep button
               var prepLink = $("<a>");
               prepLink.text("Preparation");
               prepLink.attr("href", prep);
@@ -361,10 +375,6 @@
         });
           
         }
-
-        //nav bars
-        //index
-        //saved page
         
       </script>
       
