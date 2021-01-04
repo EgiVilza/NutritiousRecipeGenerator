@@ -9,6 +9,7 @@
     
 </head>
 <body>
+  
     <nav>
         <div class="nav-wrapper">
           <a href="#" class="brand-logo">Logo</a>
@@ -19,21 +20,70 @@
             <li><a href="#">Saved</a></li>
           </ul>
         </div>
-      </nav>
+    </nav>
 
+    <p id="advancedPageTitle">Advanced Search</p>
+
+    <div class="advancedFilters">
       <div class="row">
-        <form class="col s6">
-          <div class="row">
-            <div class="input-field col s4">
-              <input id="icon_prefix" type="text" class="validate">
+        <form>
+          <div class="col s12">
+            <div class="input-field">
+              <input id="icon_prefix" type="text" class="validate food">
               <label for="icon_prefix">Food</label>
-              
             </div>
           </div>
         </form>
       </div>
 
-      <div class="row">
+      <div>
+        <form>
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="icon_prefix" type="text" class="validate minCalories">
+              <label for="icon_prefix">Calories MIN</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="icon_prefix" type="text" class="validate maxCalories">
+              <label for="icon_prefix">Calories MAX</label>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div>
+        <form>
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="icon_prefix" type="text" class="validate excluded">
+              <label for="icon_prefix">Exclude Ingredients</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="icon_prefix" type="text" class="validate numberOfIngredients">
+              <label for="icon_prefix"> Max # of recipes</label>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    
+
+    <div class="row excludedIngredients">
+      <div class="col s2 input-field addTo">
+        <a class="waves-effect waves-light btn addToButton">Add to excluded list</a>
+      </div>
+      <div class="col s2 input-field addTo">
+        <a class="waves-effect waves-light btn resetButton">Reset List</a>
+      </div>
+      <div class="col s6 offset-s6">
+        <p id="excludedListTitle">Excluded List:</p>
+        <ul class=" excludedListing" id="uList">
+        </ul>
+      </div>
+      
+    </div>
+
+      <div class="row healthLabels">
         <p>Health Labels:</p>
         <label>
           <input type="checkbox" class="filled-in" id="vegan"/>
@@ -57,7 +107,7 @@
         </label>
       </div>
 
-      <div class="row">
+      <div class="row diet">
         <p>Diet:</p>
         <label>
           <input type="checkbox" class="filled-in" id="balanced"/>
@@ -84,137 +134,238 @@
           <span>low-sodium</span>
         </label>
       </div>
+      
+    </div>
 
-      <div class="row">
-        <form class="col s12">
-          <div class="row">
-            <div class="input-field col s6">
-              <input id="icon_prefix" type="text" class="validate minCalories">
-              <label for="icon_prefix">Calories MIN</label>
-            </div>
-            <div class="input-field col s6">
-              <input id="icon_prefix" type="text" class="validate maxCalories">
-              <label for="icon_prefix">Calories MAX</label>
-            </div>
-          </div>
-        </form>
+    <div class="row">
+      <div class="col s1"></div>
+      <div class="col s2 input-field addTo">
+        <a class="waves-effect waves-light btn searchButton">Search</a>
       </div>
-
-      <div class="row">
-        <form class="col s12">
-          <div class="row">
-            <div class="input-field col s6">
-              <input id="icon_prefix" type="text" class="validate numberOfIngredients">
-              <label for="icon_prefix">Number of ingredients</label>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <div class="row">
-        <form class="col s12">
-          <div class="row">
-            <div class="input-field col s6">
-              <input id="icon_prefix" type="text" class="validate excluded">
-              <label for="icon_prefix">Exclude Ingredients</label>
-            </div>
-            <div class="input-field col s12">
-              <a class="waves-effect waves-light btn resultsButton">Add to list</a>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <div class="note">Click to uncollapse</div>
-      <ul class="collapsible collapsibleStyle">
+    </div>
+    
+      
+      <div class="results">
+        <div class="note">Click to uncollapse</div>
+        <ul class="collapsible collapsibleStyle" id="recipe-container">
           
-      </ul>
+        </ul>
+      </div>
+      
+      
     
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
       <script>
-
+        
         //Send a query URL to the Recipe Search API
         $(document).ready(function(){
         $('.collapsible').collapsible();
         });
 
-        
-        //foodSearchQuery
-        var foodImage = ""
-        var foodTitle = ""
-        var ingredients = []
-        var num = "2"
-        var food = "chicken"
-        var applicationID = "6c4c5067"
-        var appKey = "56dd4a4b1dc04c1107300036e876fbf8"
-        var queryURL = "https://api.edamam.com/search?q=" + food + "&app_id=" + applicationID + "&app_key=" + appKey + "&to=" + num
+        var excluded = []
+        var ul = $(".excludedListing")
+        var li = document.createElement("li");
+        var p = document.createElement("p")
+        $(".searchButton").on("click", search)
+        $(".addToButton").on("click", excludedFunction)
+        $(".resetButton").on("click", resetList)
 
-        $.ajax({
+        //Add to excluded list
+        function excludedFunction() {
+          var p = document.createElement("p")
+          var excludedValue = $(".excluded").val()
+          if (excludedValue == "") {
+
+          }
+          else {
+            if (excluded.indexOf(excludedValue) == -1) {
+              excluded.push(excludedValue)
+            }
+          }
+
+          ul.empty()
+          p.append(document.createTextNode(excluded))
+          ul.append(p)
+        }
+
+        //Reset excluded list
+        function resetList() {
+          var list = document.getElementById("uList")
+          ul.empty()
+          excluded = []
+          
+        }
+
+
+        function search() {
+          var food = $(".food").val()
+          var minCalories = $(".minCalories").val()
+          var maxCalories = $(".maxCalories").val()
+          var numberOfRecipes = $(".numberOfIngredients").val()
+          var emptyHealthLabels = []
+          var emptyDiet = []
+          var foodImage = ""
+          var foodTitle = ""
+          var applicationID = "564187b6"
+
+          var healthLabelsArray = ["vegan","vegetarian","peanut-free",
+          "tree-nut-free","alcohol-free"]
+
+          var dietArray = ["balanced","high-fiber","high-protein",
+          "low-carb","low-fat","low-sodium"]
+  
+          //Defaults to 1 number of recipes
+          var num = 1
+          if (numberOfRecipes != "") {
+            num = numberOfRecipes
+          }
+          
+          //Query to recipe search API, num is initilized for number of results
+          var appKey = "e86e8beddfc5b70d5c1adfa48105e411"
+          var queryURL = "https://api.edamam.com/search?q=" + food + "&app_id=" + applicationID + "&app_key=" 
+          + appKey + "&to=" + num
+
+
+          //Health lables
+          for (var i = 0; i < healthLabelsArray.length; i++) {
+            var healthLabel = "#" + [healthLabelsArray[i]]
+            if ($(healthLabel).prop("checked") === true) {
+              var label1 = healthLabelsArray[i]
+              queryURL = queryURL + "&health=" + healthLabelsArray[i]
+
+            }
+  
+          }
+          
+          //Diet Labels
+          for (var i = 0; i < dietArray.length; i++) {
+            var dietLabel = "#" + [dietArray[i]]
+            if ($(dietLabel).prop("checked") === true) {
+              var label2 = dietArray[i]
+              queryURL = queryURL + "&diet=" + dietArray[i] 
+            }
+          }
+
+        //Calories
+        if (minCalories == "" && maxCalories == "") {
+        }
+        else if ((minCalories != "") && (maxCalories != "")) {
+          var cal = "&calories=" + minCalories + "-" + maxCalories
+          queryURL = queryURL + cal
+        }
+        else {
+          if (minCalories !=   "") {
+            var cal = "&calories=" + minCalories
+            queryURL = queryURL + cal
+          }
+          else {
+            var cal = "&calories=" + maxCalories
+            queryURL = queryURL + cal
+          }
+        }
+
+        //Excluded
+        if (excluded.length > 0) {
+          for (var i = 0; i < excluded.length; i++) {
+            queryURL = queryURL + "&excluded=" + excluded[i]
+          }
+        }
+        
+
+        console.log(queryURL)
+
+          $.ajax({
         url: queryURL,
         method: "GET"
         }).then(function(response) {
 
+            //Clears old search
+            $(".collapsibleStyle").empty()
+
             //Limits the number of results for the collapse for loop
             var numberofRecipes = 1
 
-            //For loop to add each recipe content into a collapsible list
-            for (var i = 0; i <= numberofRecipes; i++) {
-                foodTitle = response.hits[i].recipe.label
-                foodImage = response.hits[i].recipe.image
-                ingredients = response.hits[i].recipe.ingredientLines
+            for (var i = 0; i < numberofRecipes; i++) {
+              //Save recipe title, image, and ingredients array to variables
+              var foodTitle = response.hits[i].recipe.label
+              var foodImage = response.hits[i].recipe.image
+              var ingredients = response.hits[i].recipe.ingredientLines
+              var prep = response.hits[i].recipe.url
 
-                //collapsable layout
-                var list = $("<li>")
-                //div for Title
-                var divTitle = $("<div>")
-                //div for food information
-                var divInfo = $("<div>")
+              //select container element
+              //var container = $("#recipe-container");
+              var container = $("#recipe-container")
+              //create and append new list item
+              var newRecipe = $("<li>");
+              container.append(newRecipe);
+              newRecipe.addClass("active")
 
-                $(".collapsible").append(list)
+              //create and append header div
+              var header = $("<div>");
+              newRecipe.append(header);
+              header.addClass("collapsible-header");
+              header.text(foodTitle)
 
-                //give common and unique id's to each div
-                divTitle.attr({ class:"collapsible-header material-icons", id:"foodHeader" + i })
-                divInfo.attr({ class:"collapsible-body", id:"foodBody" + i})
+              //create and append body div
+              var body = $("<div>");
+              newRecipe.append(body);
+              body.addClass("collapsible-body");
+              body.attr("style", "display: block;")
 
-                //Adds the recipe title and info to the collapse list
-                list.append(divTitle)
-                list.append(divInfo)
-                
-                //Stores unique div ID's to a variable
-                var foodHeader = divTitle.attr("id")
-                var foodBody = divInfo.attr("id")
+              //Create and append organizing grid containers
+              var row = $("<div>");
+              var left = $("<div>");
+              var middle = $("<div>");
+              var right = $("<div>");
+              row.addClass("row");
+              left.addClass("col s4");
+              right.addClass("col s8");
+              body.append(row);
+              row.append(left);
+              row.append(right);
 
-                //Adds food label to collasible div
-                $("#"+foodHeader).text(foodTitle)
+              //Create and append image using recipe image
+              var image = $("<img>");
+              image.attr("src", foodImage);
+              left.append(image);
 
-                //Adds image to collabsible div
-                var image = $("<img>")
-                image.attr("src", foodImage)
-                $("#" + foodBody).append(image)
+              //Create and append "Ingredients" title
+              var ingredientTitle = $("<h5>");
+              ingredientTitle.text("Ingredients:");
+              right.append(ingredientTitle);
 
-                //Adds the recipe ingredients to collabsible div
-                var text = $("<p>")
-                text.text(ingredients)
-                $("#" + foodBody).append(text)
+              //Create and append a list container inside body
+              var ingredientList = $("<ul>");
+              right.append(ingredientList);
+
+              //loop through ingredients array and add list items for each
+              for (j = 0; j < ingredients.length; j++) {
+                var newItem = $("<li>");
+                ingredientList.append(newItem);
+                newItem.text(ingredients[j])
+              }
+
+              //Create and append link to preperation instructions
+              var prepTitle = $("<h5>");
+              right.append(prepTitle);
+
+              var prepLink = $("<a>");
+              prepLink.text("Preparation");
+              prepLink.attr("href", prep);
+              prepLink.addClass("waves-effect waves-light btn");
+              prepTitle.append(prepLink);
 
             }
 
         });
-      
-        console.log($("#peanut-free").prop("checked"))
-
-        //Return a row of checkboxes
-        //When the checkboxes are clicked then it gets added onto the url
-        
-        //list of options
-        //health label - checkboxes
-        //diet - checkboxes
-        //calories - two input boxes
-        //ingredients number - input box
-        //Time - maybe - two input boxes
-        //excluded - input box
           
+        }
+
+        //nav bars
+        //index
+        //saved page
+        
       </script>
       
 </body>
