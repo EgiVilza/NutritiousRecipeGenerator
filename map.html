@@ -24,40 +24,90 @@
       </ul>
     </div>
   </nav>
-
-  <div class="mapTitle">Enter a country or click on the map to select one</div>
-
-  <div class="row mapSearch">
-    <form class="col s12">
-      <div class="row">
-        <div class="input-field col s6">
-          <input id="icon_prefix" type="text" class="validate countryInput">
-          <label for="icon_prefix">Country</label>
-        </div>
-        <div class="input-field col s6">
-          <input id="icon_prefix" type="text" class="validate recipeInput">
-          <label for="icon_prefix">Recipe</label>
-        </div>
-        <div class="input-field col s12">
-          <a class="waves-effect waves-light btn resultsButton">View Results</a>
-        </div>
-      </div>
-    </form>
+  <div class="container">
+    <p class="mapTitle flow-text">Click on the map or select a region to view recipes from regions around the world!
+    </p>
   </div>
 
   <div class="container">
     <div class="row">
-      <div id="note">Click to Uncollapse</div>
-      <ul id="recipe-container" class="collapsible expandable"></ul>
+      <a class='dropdown-trigger btn col s2 push-s5' href='#' data-target='dropdown-countries'>Select a Region!</a>
+      <ul id='dropdown-countries' class='dropdown-content'>
+        <li><a data-country="American">American</a></li>
+        <li><a data-country="British">British</a></li>
+        <li><a data-country="Canadian">Canadian</a></li>
+        <li><a data-country="Chinese">Chinese</a></li>
+        <li><a data-country="Dutch">Dutch</a></li>
+        <li><a data-country="Egyptian">Egyptian</a></li>
+        <li><a data-country="French">French</a></li>
+        <li><a data-country="Greek">Greek</a></li>
+        <li><a data-country="Indian">Indian</a></li>
+        <li><a data-country="Irish">Irish</a></li>
+        <li><a data-country="Italian">Italian</a></li>
+        <li><a data-country="Jamaican">Jamaican</a></li>
+        <li><a data-country="Japanese">Japanese</a></li>
+        <li><a data-country="Kenyan">Kenyan</a></li>
+        <li><a data-country="Malaysian">Malaysian</a></li>
+        <li><a data-country="Mexican">Mexican</a></li>
+        <li><a data-country="Moroccan">Moroccan</a></li>
+        <li><a data-country="Polish">Polish</a></li>
+        <li><a data-country="Russian">Russian</a></li>
+        <li><a data-country="Spanish">Spanish</a></li>
+        <li><a data-country="Thai">Thai</a></li>
+        <li><a data-country="Tunisian">Tunisian</a></li>
+        <li><a data-country="Turkish">Turkish</a></li>
+        <li><a data-country="Vietnamese">Vietnamese</a></li>
+        <li><a data-country="Unknown">Unknown</a></li>
+
+      </ul>
     </div>
   </div>
 
   <img id="map" name="map" src="map.jpg" alt="Map of Earth" width="900px" height="600px"
     onclick="clickMapImage(event);" />
 
+  <div class="container">
+    <div class="row">
+      <div id="note"></div>
+      <ul id="recipe-container" class="collapsible expandable"></ul>
+    </div>
+  </div>
+
 </body>
 
 <script>
+  //global variables
+  var ingredientsArr = []
+  var measuresArr = []
+  var imArr = []
+  var codesArr = []
+
+  var allInfoArr = []
+
+  var country = ""
+  var queryURL = ""
+
+  //dropdown list
+  $('.dropdown-trigger').dropdown();
+
+  //event listener for dropdown items
+  $("#dropdown-countries").on("click", function (event) {
+
+    country = ($(event.target).data("country"));
+    console.log(country)
+    console.log(event)
+    queryURL = "https://www.themealdb.com/api/json/v1/1/filter.php?a=" + country
+
+    var container = $("#recipe-container");
+    container.empty();
+
+    getInfo();
+
+    //reset array
+    codesArr = []
+
+  });
+
   function clickMapImage(event) {
     var xCoordinate = event.offsetX;
     var yCoordinate = event.offsetY;
@@ -68,37 +118,134 @@
     var coordString = latitude + "," + longitude
     //appID and key
     var key = "ec16e811d654f74e28ffe0acccf5a092"
-    var queryURL = "http://api.positionstack.com/v1/reverse?access_key=" + key + "&query=" + coordString
+    var queryURLMap = "http://api.positionstack.com/v1/reverse?access_key=" + key + "&query=" + coordString
     //              http://api.positionstack.com/v1/reverse?access_key=ec16e811d654f74e28ffe0acccf5a092&query=40.7638435,-73.9729691
     $.ajax({
-      url: queryURL,
+      url: queryURLMap,
       method: "GET"
     })
 
       .then(function (response) {
         console.log(response)
 
-        if (response.data[0].country_code === "USA") {
-          console.log("American")
+        if (response.data[0].continent === "North America") {
+          console.log("NA")
+          if (response.data[0].country_code === "USA") {
+            console.log("American")
+            country = "American"
+          } else if (response.data[0].country_code === "CAN" || response.data[0].country_code === "GRL") {
+            console.log("Canadian")
+            country = "Canadian"
+          } else if (response.data[0].country_code === "MEX") {
+            console.log("Mexican")
+            country = "Mexican"
+          } else if (response.data[0].latitude < 25.8056) {
+            console.log("Jamaican")
+            country = "Jamaican"
+          } else {
+            console.log("Canadian")
+            country = "Canadian"
+          }
+        } else if (response.data[0].continent === "South America") {
+          console.log("SA")
+          country = "Jamaican"
+        } else if (response.data[0].continent === "Europe") {
+          console.log("EU")
+          if (response.data[0].country_code === "GBR") {
+            console.log("British")
+            country = "British"
+          } else if (response.data[0].country_code === "NLD") {
+            console.log("Dutch")
+            country = "Dutch"
+          } else if (response.data[0].country_code === "FRA" || response.data[0].country_code === "DEU") {
+            console.log("French")
+            country = "French"
+          } else if (response.data[0].country_code === "GRC") {
+            console.log("Greek")
+            country = "Greek"
+          } else if (response.data[0].country_code === "IRL") {
+            console.log("Irish")
+            country = "Irish"
+          } else if (response.data[0].country_code === "ITA") {
+            console.log("Italian")
+            country = "Italian"
+          } else if (response.data[0].country_code === "POL") {
+            console.log("Polish")
+            country = "Polish"
+          } else if (response.data[0].country_code === "RUS") {
+            console.log("Russian")
+            country = "Russian"
+          } else if (response.data[0].country_code === "ESP" || response.data[0].country_code === "PRT") {
+            console.log("Spanish")
+            country = "Spanish"
+          } else {
+            console.log("Polish")
+            country = "Polish"
+          }
+        } else if (response.data[0].continent === "Asia") {
+          console.log("AS")
+          if (response.data[0].country_code === "CHN") {
+            console.log("Chinese")
+            country = "Chinese"
+          } else if (response.data[0].country_code === "IND") {
+            console.log("Indian")
+            country = "Indian"
+          } else if (response.data[0].country_code === "JPN") {
+            console.log("Japanese")
+            country = "Japanese"
+          } else if (response.data[0].country_code === "VNM" || response.data[0].country_code === "KHM" || response.data[0].country_code === "LAO") {
+            console.log("Vietnamese")
+            country = "Vietnamese"
+          } else if (response.data[0].country_code === "MYS" || response.data[0].latitude <= 4.945169) {
+            console.log("Malaysian")
+            country = "Malaysian"
+          } else if (response.data[0].country_code === "THA" || response.data[0].latitude > 4.945169 && response.data[0].latitude < 17.363465) {
+            console.log("Thai")
+            country = "Thai"
+          } else if (response.data[0].country_code === "TUR") {
+            console.log("Turkish")
+            country = "Turkish"
+          } else {
+            console.log("Chinese")
+            country = "Chinese"
+          }
+        } else if (response.data[0].continent === "Africa") {
+          console.log("AF")
+          if (response.data[0].country_code === "EGY") {
+            console.log("Egyptian")
+            country = "Egyptian"
+          } else if (response.data[0].country_code === "KEN" || response.data[0].latitude < 15.32362) {
+            console.log("Kenyan")
+            country = "Kenyan"
+          } else if (response.data[0].country_code === "MAR" || response.data[0].latitude > 15.32362 && response.data[0].longitude <= 13.149444) {
+            console.log("Moroccan")
+            country = "Moroccan"
+          } else if (response.data[0].country_code === "TUN" || response.data[0].latitude > 15.32362 && response.data[0].longitude > 13.149444) {
+            console.log("Tunisian")
+            country = "Tunisian"
+          } else {
+            console.log("Kenyan")
+            country = "Kenyan"
+          }
+        } else if (response.data[0].continent === "Oceania") {
+          console.log("OC")
+          country = "British"
+        } else {
+          console.log("Unknown")
+          country = "Unknown"
         }
-        if (response.data[0].continent === "Asia" && response.data[0].country_code !== "CHN") {
-          console.log("Asian")
-        }
-        if (response.data[0].country_code === "CHN") {
-          console.log("Chinese")
-        }
-        if (response.data[0].country_code === "MEX") {
-          console.log("Mexican")
-        }
-        if (response.data[0].country_code === "GBR") {
-          console.log("British")
-        }
-        if (response.data[0].continent === "North America" && response.data[0].latitude < 25.8056) {
-          console.log("Carribean")
-        }
-        if (response.data[0].name === "Gulf of Mexico" || response.data[0].name === "Caribbean Sea") {
-          console.log("Carribean")
-        }
+
+        queryURL = "https://www.themealdb.com/api/json/v1/1/filter.php?a=" + country
+
+        var container = $("#recipe-container");
+        container.empty();
+
+        getInfo();
+
+        //reset array
+        codesArr = []
+
+
       })
   }
 
@@ -108,198 +255,177 @@
   });
 
 
-  //foodSearchQuery
-  var numberofRecipes = 5
-  var foodImage = ""
-  var foodTitle = ""
-  var codesObj = {}
-  var foodCode = ""
-  var ingredients = []
+  //Function to write recipe info to the container using allInfoArr array
+  function writeRecipes() {
 
-  var obj = {}
-  var newArray = []
+    //Save info to appropriate variables from allInfoArr
+    var foodTitle = allInfoArr.meals[0].strMeal;
+    var foodImage = allInfoArr.meals[0].strMealThumb;
+    var keysArr = Object.keys(allInfoArr.meals[0]);
+    var valuesArr = Object.values(allInfoArr.meals[0]);
+    var linkUrl = allInfoArr.meals[0].strSource;
 
-  var prep = ""
-  var country = "Canadian"
-  var queryURL = "https://www.themealdb.com/api/json/v1/1/filter.php?a=" + country
+    //select container element
+    var container = $("#recipe-container");
+    //create and append new list item
+    var newRecipe = $("<li>");
+    container.append(newRecipe);
 
-  $.ajax({
-    url: queryURL,
-    method: "GET"
-  }).then(function (response) {
-    console.log(response)
+    //create and append header div
+    var header = $("<div>");
+    newRecipe.append(header);
+    header.addClass("collapsible-header");
+    header.text(foodTitle)
 
-    for (var i = 0; i < numberofRecipes; i++) {
+    //create and append body div
+    var body = $("<div>");
+    newRecipe.append(body);
+    body.addClass("collapsible-body");
 
-      foodTitle = response.meals[i].strMeal;
-      foodImage = response.meals[i].strMealThumb;
-      codesObj[i] = response.meals[i].idMeal;
+    //Create and append organizing grid containers
+    var row = $("<div>");
+    var left = $("<div>");
+    var middle = $("<div>");
+    var right = $("<div>");
+    row.addClass("row");
+    left.addClass("col s4");
+    right.addClass("col s8");
+    body.append(row);
+    row.append(left);
+    row.append(right);
 
-      //select container element
-      var container = $("#recipe-container");
-      //create and append new list item
-      var newRecipe = $("<li>");
-      container.append(newRecipe);
+    //Create and append image using recipe image
+    var image = $("<img>");
+    image.attr("src", foodImage);
+    image.attr("width", "300px");
+    image.attr("height", "300px");
+    left.append(image);
 
-      //create and append header div
-      var header = $("<div>");
-      newRecipe.append(header);
-      header.addClass("collapsible-header");
-      header.text(foodTitle)
+    //Create and append "Ingredients" title
+    var ingredientTitle = $("<h5>");
+    ingredientTitle.text("Ingredients:");
+    right.append(ingredientTitle);
 
-      //create and append body div
-      var body = $("<div>");
-      newRecipe.append(body);
-      body.addClass("collapsible-body");
+    //Create and append a list container inside body
+    var ingredientList = $("<ul>");
+    right.append(ingredientList);
 
-      //Create and append organizing grid containers
-      var row = $("<div>");
-      var left = $("<div>");
-      var middle = $("<div>");
-      var right = $("<div>");
-      row.addClass("row");
-      left.addClass("col s4");
-      right.addClass("col s8");
-      body.append(row);
-      row.append(left);
-      row.append(right);
+    //Get ingredients and measures from response, combine and save to imArr array
+    for (j = 0; j < keysArr.length; j++) {
+      var key = keysArr[j]
+      if (key.includes("strIngredient") === true) {
+        ingredientsArr.push(valuesArr[j]);
+      }
+      if (key.includes("strMeasure") === true) {
+        measuresArr.push(valuesArr[j]);
+      }
+    }
+    //clear arrays
+    keysArr = [];
+    valuesArr = [];
 
-      //Create and append image using recipe image
-      var image = $("<img>");
-      image.attr("src", foodImage);
-      image.attr("width", "300px");
-      image.attr("height", "300px");
-      left.append(image);
+    //Loop through and combine new arrays
+    for (j = 0; j < ingredientsArr.length; j++) {
+      var ingredient = ingredientsArr[j]
+      var measure = measuresArr[j]
 
-      //Create and append "Ingredients" title
-      var ingredientTitle = $("<h5>");
-      ingredientTitle.text("Ingredients:");
-      right.append(ingredientTitle);
+      if (ingredient === "" || ingredient === null) {
+        //clear arrays and break once ingredients stop
+        ingredientsArr = []
+        measuresArr = []
+        break
+      }
 
-      //Create and append a list container inside body
-      var ingredientList = $("<ul>");
-      right.append(ingredientList);
+      imArr[j] = (ingredient + ": " + measure)
 
-      //Create and append link to preperation instructions
-      var prepTitle = $("<h5>");
-      right.append(prepTitle);
+      if (j === 19) {
+        ingredientsArr = []
+        measuresArr = []
+        break
+      }
+    }
 
-      var prepLink = $("<a>");
-      prepLink.text("Preparation");
-      prepLink.addClass("waves-effect waves-light btn");
-      prepLink.attr("id", i);
-      prepTitle.append(prepLink);
+    //loop through imArr array and add list items for each
+    for (j = 0; j < imArr.length; j++) {
+
+      var newItem = $("<li>");
+      ingredientList.append(newItem);
+      newItem.text(imArr[j])
 
     }
 
-    console.log("-----------------------------------");
-    console.log(codesObj);
-
-    for (var i = 0; i < numberofRecipes; i++) {
-
-      var queryURL2 = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + codesObj[i]
-
-      $.ajax({
-        url: queryURL2,
-        method: "GET"
-      }).then(function (response) {
-        console.log(response);
-        console.log(indexOf(codesObj[i]))
-        prep = response.meals[0].strSource
-        console.log(prep)
-
-      });
-
-    }
+    //clear array
+    imArr = [];
 
 
+    //Create and append button to link to preperation instructions
+    var prepTitle = $("<h5>");
+    right.append(prepTitle);
+    var prepLink = $("<a>");
+    prepLink.text("Preparation");
+    prepLink.addClass("waves-effect waves-light btn");
+    prepLink.attr("href", linkUrl);
+    prepTitle.append(prepLink);
 
 
+  }
 
-    // prep = response.meals[0].strSource
+  //Pull recipes from local storage and write to screen if something is saved
+  //pull saved buttons from local storage if they exist 
+  allInfoArr = JSON.parse(localStorage.getItem("mapRecipes"));
 
-    // //Create and append "Ingredients" title
-    // var ingredientTitle = $("<h5>");
-    // ingredientTitle.text("Ingredients:");
-    // right.append(ingredientTitle);
+  //If something was pulled, write recipes to page
+  if (allInfoArr !== null) {
+    writeRecipes();
+  }
 
-    // //Create and append a list container inside body
-    // var ingredientList = $("<ul>");
-    // right.append(ingredientList);
+  //function to make ajax requests for info following map click, then run writeRecipes function
+  //First AJAX request using country to recieve recipe codes
 
-    // //Create ingredients array using ingredients and amounts from returned recipe
-    // var newIngredient = response.meals[0].strMeasure1 + " " + response.meals[0].strIngredient1
-    // ingredients.push(response.meals[0].strIngredienti)
+  function getInfo() {
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function (response) {
+      var pass1 = response
 
+      for (var i = 0; i < response.meals.length; i++) {
+        //store chosen number of codes in codesArr array
+        var recipeCode = pass1.meals[i].idMeal
+        codesArr.push(recipeCode)
 
+      }
 
-    // //loop through ingredients array and add list items for each
-    // for (j = 0; j < ingredients.length; j++) {
-    //   var newItem = $("<li>");
-    //   ingredientList.append(newItem);
+      //loop through codesArr array, make an AJAX request for detailed recipe info using each returned recipe code
+      for (var i = 0; i < response.meals.length; i++) {
 
-    //   newItem.text(ingredients[j])
+        var queryURL2 = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + codesArr[i]
 
+        $.ajax({
+          url: queryURL2,
+          method: "GET",
+          async: true
+        }).then(function (response) {
+          allInfoArr = response;
 
+          writeRecipes();
 
+        });
 
-    // }
-
-
-
-
-
-
-
-
-
-
-    // var numberofRecipes = 1
-
-    // //For loop to add each recipe content into a collapsible list
-    // for (var i = 0; i < numberofRecipes; i++) {
-
-
-    //     ingredients = response.hits[i].recipe.ingredientLines
-
-    //     //collapsable layout
-    //     var list = $("<li>")
-    //     //div for Title
-    //     var divTitle = $("<div>")
-    //     //div for food information
-    //     var divInfo = $("<div>")
-
-    //     $(".collapsible").append(list)
-
-    //     //give common and unique id's to each recipe div
-    //     divTitle.attr({ class:"collapsible-header material-icons", id:"foodHeader" + i })
-    //     divInfo.attr({ class:"collapsible-body", id:"foodBody" + i})
-
-    //     //Adds the recipe title and info to the collapse list
-    //     list.append(divTitle)
-    //     list.append(divInfo)
-
-    //     //Stores unique div ID's to a variable
-    //     var foodHeader = divTitle.attr("id")
-    //     var foodBody = divInfo.attr("id")
-
-    //     //Adds food label to collasible div
-    //     $("#"+foodHeader).text(foodTitle)
-
-    //     //Adds image to collabsible div
-    //     var image = $("<img>")
-    //     image.attr("src", foodImage)
-    //     $("#" + foodBody).append(image)
-
-    //     //Adds the recipe ingredients to collabsible div
-    //     var text = $("<p>")
-    //     text.text(ingredients)
-    //     $("#" + foodBody).append(text)
-
-    // }
+      }
 
 
 
-  });
+      //Save allInfoArr to localStorage
+      // localStorage.setItem("mapRecipes", JSON.stringify(allInfoArr));
 
+      //Write recipes to page from array
+
+      //reset allInfoArr
+      allInfoArr = []
+
+
+    });
+
+  }
 </script>
