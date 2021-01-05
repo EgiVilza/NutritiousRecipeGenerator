@@ -1,42 +1,54 @@
+/*Links for navigation bar*/
 a:link {
     text-decoration: none;
-    color: black;
+    color: white;
     
 }
 
+/**/
 .fullrow {
     min-height: 100vh;
 }
 
+/**/
 .searchBox {
     margin-top: 10px;
 }
 
+/**/
 .collapsibleStyle {
     margin-right: 10%;
     margin-left: 10%;
 }
 
+/**/
 .note {
     margin-right: 10%;
     margin-left: 10%;   
 }
 
+/**/
 #note {
     text-align: center;
 }
 
-#map {
+/*map.html select a region button*/
+.regionButton {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+/*map.html*/
+.mapImage {
+    position: relative;
+    margin-top: 5%;
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
+/*map.html*/
 .mapTitle {
-    text-align: center;
-}
-
-.mapSearch {
     text-align: center;
 }
 

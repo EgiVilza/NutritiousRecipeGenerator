@@ -10,17 +10,17 @@
 
 </head>
 
-<body>
+<body class="hero">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <nav>
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">Recipe Generator</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">World Recipes</a></li>
-        <li><a href="#">Advanced</a></li>
-        <li><a href="#">Saved</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="map.html">World Recipes</a></li>
+        <li><a href="advanced.html">Advanced</a></li>
+        <li><a href="savedrecipes.html">Saved</a></li>
       </ul>
     </div>
   </nav>
@@ -31,7 +31,7 @@
 
   <div class="container">
     <div class="row">
-      <a class='dropdown-trigger btn col s2 push-s5' href='#' data-target='dropdown-countries'>Select a Region!</a>
+      <a class='dropdown-trigger btn col s2 push-s5 regionButton' href='#' data-target='dropdown-countries'>Select a Region!</a>
       <ul id='dropdown-countries' class='dropdown-content'>
         <li><a data-country="American">American</a></li>
         <li><a data-country="British">British</a></li>
@@ -63,7 +63,7 @@
     </div>
   </div>
 
-  <img id="map" name="map" src="map.jpg" alt="Map of Earth" width="900px" height="600px"
+  <img id="map" class="mapImage" name="map" src="map.jpg" alt="Map of Earth" width="900px" height="600px"
     onclick="clickMapImage(event);" />
 
   <div class="container">
