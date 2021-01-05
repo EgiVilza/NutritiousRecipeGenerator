@@ -111,3 +111,12 @@ a:link {
     text-align: center;
     font-size: 35px;
 }
+
+.whiteBackground {
+    background-color: white;
+}
+
+.test {
+    margin-right: 10%;
+    margin-left: 10%;
+}
