@@ -373,55 +373,11 @@
               prepLink.addClass("waves-effect waves-light btn");
               prepTitle.append(prepLink);
 
-              //Creates object in proper format for saving to local storage
-              var storedRecipe = new Object();
-              storedRecipe.foodTitle = foodTitle;
-              storedRecipe.foodImage = foodImage;
-              storedRecipe.ingredients = response.hits[i].recipe.ingredientLines;
-              storedRecipe.prep = prep;
-              storedRecipeString = JSON.stringify(storedRecipe)
-
-         
-              //Create and append button to link to preperation instructions
-              var saveTitle = $("<h5>");
-              right.append(saveTitle);
-              var saveBtn = $("<a>");
-              saveBtn.text("Save");
-              saveBtn.addClass("waves-effect waves-light btn saveBtn");
-              saveBtn.attr("recipeString", storedRecipeString);
-              saveTitle.append(saveBtn);
-
-
             }
 
         });
           
         }
-      //Stores an object into an array saved to localStorage
-      function addObjectToSavedArray(object){
-        //If storage is currently empty, it makes a new array pushes the object to that
-      if (localStorage.getItem("savedRecipes") === null){
-        storedRecipeArray = []
-        storedRecipeArray.push(object)
-        storedRecipeArray = JSON.stringify(storedRecipeArray)
-        localStorage.setItem("savedRecipes", storedRecipeArray)
-      }
-      //Otherwise it parses the current array in localStorage and pushes the object into it.
-      else{
-      storedRecipeArray = JSON.parse(localStorage.getItem("savedRecipes"))
-      storedRecipeArray.push(object)
-      storedRecipeArray = JSON.stringify(storedRecipeArray)
-      localStorage.setItem("savedRecipes", storedRecipeArray)
-      }
-    }
-
-        //Creates an event listener for the save buttons
-    $(document).on("click", ".saveBtn", function(){
-    //Stores the recipeString attribute assosciated with whichever save button was as an object into the array of stored recipes
-    selectedRecipe = JSON.parse($(this).attr("recipeString"))
-    addObjectToSavedArray(selectedRecipe)
-    })
-
         
       </script>
       
