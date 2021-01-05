@@ -354,7 +354,8 @@
 
     }
 
-
+    //clear array
+    imArr = [];
 
 
     //Create and append button to link to preperation instructions
@@ -365,26 +366,6 @@
     prepLink.addClass("waves-effect waves-light btn");
     prepLink.attr("href", linkUrl);
     prepTitle.append(prepLink);
-
-    //Creates object in proper format for saving to local storage
-    var storedRecipe = new Object();
-    storedRecipe.foodTitle = foodTitle;
-    storedRecipe.foodImage = foodImage;
-    storedRecipe.ingredients = imArr;
-    storedRecipe.prep = allInfoArr.meals[0].strSource;
-    storedRecipeString = JSON.stringify(storedRecipe)
-
-    //clear array
-    imArr = [];
-
-    //Create and append button to link to preperation instructions
-    var saveTitle = $("<h5>");
-    right.append(saveTitle);
-    var saveBtn = $("<a>");
-    saveBtn.text("Save");
-    saveBtn.addClass("waves-effect waves-light btn saveBtn");
-    saveBtn.attr("recipeString", storedRecipeString);
-    saveTitle.append(saveBtn);
 
 
   }
@@ -428,66 +409,23 @@
           allInfoArr = response;
 
           writeRecipes();
-        });
 
+        });
 
       }
 
-     
 
-    //reset allInfoArr
-    allInfoArr = []
+
+      //Save allInfoArr to localStorage
+      // localStorage.setItem("mapRecipes", JSON.stringify(allInfoArr));
+
+      //Write recipes to page from array
+
+      //reset allInfoArr
+      allInfoArr = []
 
 
     });
+
   }
-
-
-//TEST ARRAY
-testArray = []
-var object1 = {
-      foodTitle: "Cauliflower Veloute with American Caviar",
-      foodImage: "https://www.edamam.com/web-img/2b1/2b130d86301a129ecef68bd9399870de.jpg",
-      ingredients: ["2 tablespoons unsalted butter", "1 medium shallot, chopped", "2 large heads cauliflower, cut into 1-inch pieces (about 12 cups)", "2 cups heavy cream", "3 1/2 cups homemade or store-bought low-sodium chicken or vegetable stock", "2 tablespoons olive oil", "Coarse salt and freshly ground black pepper", "2 tablespoons freshly squeezed lemon juice", "1/4 teaspoon cayenne pepper", "2 ounces american caviar, such as paddlefish", "1 small bunch fresh tarragon, for garnish"],
-      prep: "http://www.marthastewart.com/859170/cauliflower-veloute-american-caviar",
-    }
-
-var object2 = {
-      foodTitle: "OBJeCT2OBjecet22",
-      foodImage: "https://www.edamam.com/web-img/2b1/2b130d86301a129ecef68bd9399870de.jpg",
-      ingredients: ["2 tablespoons unsalted butter", "2222, chopped", "2222222222", "2222222", "2222222", "22222222", "22222222", "2 tablespoons freshly squeezed lemon juice", "1/4 teaspoon cayenne pepper", "2 ounces american caviar, such as paddlefish", "1 small bunch fresh tarragon, for garnish"],
-      prep: "http://www.marthastewart.com/859170/cauliflower-veloute-american-caviar",
-    }
-testArray.push(object1)
-testArray.push(object2)
-
-  //Stores an object into an array saved to localStorage
-  function addObjectToSavedArray(object){
-    //If storage is currently empty, it makes a new array pushes the object to that
-  if (localStorage.getItem("mapSavedRecipes") === null){
-    storedRecipeArray = []
-    storedRecipeArray.push(object)
-    storedRecipeArray = JSON.stringify(storedRecipeArray)
-    localStorage.setItem("mapSavedRecipes", storedRecipeArray)
-  }
-  //Otherwise it parses the current array in localStorage and pushes the object into it.
-  else{
-  storedRecipeArray = JSON.parse(localStorage.getItem("mapSavedRecipes"))
-  storedRecipeArray.push(object)
-  storedRecipeArray = JSON.stringify(storedRecipeArray)
-  localStorage.setItem("mapSavedRecipes", storedRecipeArray)
-  }
-}
-
-
-//Creates an event listener for the save buttons
-$(document).on("click", ".saveBtn", function(){
-//Stores the recipeString attribute assosciated with whichever save button was as an object into the array of stored recipes
-selectedRecipe = JSON.parse($(this).attr("recipeString"))
-addObjectToSavedArray(selectedRecipe)
-})
-
-
-
-
 </script>
