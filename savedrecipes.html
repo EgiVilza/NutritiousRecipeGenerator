@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nutritous Recipes</title>
+    <title>Saved Recipes</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="style.css">
@@ -15,21 +15,28 @@
     <nav>
         <div class="white-text nav-wrapper">
             <a href="#" class="brand-logo">Recipe Generator</a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="map.html">World Recipes</a></li>
                 <li><a href="advanced.html">Advanced</a></li>
-                <li><a href="savedrecipes.html">Saved</a></li>
+                <li><a href="#">Saved</a></li>
             </ul>
         </div>
     </nav>
+    <ul class="sidenav" id="mobile-demo">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="map.html">World Recipes</a></li>
+        <li><a href="advanced.html">Advanced</a></li>
+        <li><a href="#">Saved</a></li>
+    </ul>
 
     <div class="hero">
-        <div class="container">
+        <div class="container" id="searchStyle">
             <div class="row">
                 <form class="col s12">
                     <div class="row">
-                        <p id="indexTitle">View the recipes you've saved!</p>
+                        <h2 id="indexTitle">Saved Recipes</h2>
 
                     </div>
                 </form>
@@ -39,7 +46,7 @@
         <div class="container" id="resultStyle">
             <div class="row fullrow">
                 <div class="container">
-                    <div id="note">Click to Uncollapse</div>
+                    <div id="note">Click Recipes to Uncollapse</div>
                     <ul id="recipe-container" class="collapsible expandable"></ul>
                 </div>
             </div>
@@ -49,6 +56,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script type="text/javascript">
+        //Materilize function for navbar
+        $(document).ready(function () {
+            $('.sidenav').sidenav();
+        });
         var elem = document.querySelector('.collapsible.expandable');
         var instance = M.Collapsible.init(elem, {
             accordion: false
@@ -165,19 +176,19 @@
 
             if (deletedRecipe !== undefined) { //if button selected is not a delete button, skip this
 
-            //Pull saved recipes object from local storage
-            var savedRecipes = JSON.parse(localStorage.getItem("savedRecipes"));
+                //Pull saved recipes object from local storage
+                var savedRecipes = JSON.parse(localStorage.getItem("savedRecipes"));
 
-            //Remove recipe corresponding to delete button clicked
-            savedRecipes.splice(deletedRecipe, 1)
+                //Remove recipe corresponding to delete button clicked
+                savedRecipes.splice(deletedRecipe, 1)
 
-            //Save new object back to storage
-            localStorage.setItem("savedRecipes", JSON.stringify(savedRecipes));
-            console.log("After")
-            console.log(savedRecipes)
+                //Save new object back to storage
+                localStorage.setItem("savedRecipes", JSON.stringify(savedRecipes));
+                console.log("After")
+                console.log(savedRecipes)
 
-            //Write recipes from new saved array
-            writeRecipes();
+                //Write recipes from new saved array
+                writeRecipes();
 
             }
 

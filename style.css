@@ -22,26 +22,17 @@ a:link {
 }
 
 /**/
-.note {
-    margin-right: 10%;
-    margin-left: 10%;   
-}
-
-/**/
 #note {
     text-align: center;
-}
-
-/*map.html select a region button*/
-.regionButton {
-    margin-top: 30px;
-    margin-bottom: 10px;
+    font-size: 16px;
+    margin-right: 10%;
+    margin-left: 10%;   
 }
 
 /*map.html*/
 .mapImage {
     position: relative;
-    margin-top: 5%;
+    margin-bottom: 5%;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -63,8 +54,10 @@ a:link {
 
 .advancedFilters {
     border: solid;
+    margin-top: 40px;
     margin-left: 5%;
     margin-right: 5%;
+    margin-bottom: 5%;
 }
 
 .addTo {
@@ -82,7 +75,6 @@ a:link {
 
 #excludedListTitle {
     font-size: 20px;
-    margin-top: -10%;
     margin-bottom: 50px;
 }
 
@@ -121,11 +113,12 @@ a:link {
 
 #resultStyle {
     border-radius: 5px;
+    margin-bottom: 100vh;
 }
 
 #indexTitle {
     text-align: center;
-    font-size: 35px;
+    margin-bottom: 20px;
 }
 
 .whiteBackground {

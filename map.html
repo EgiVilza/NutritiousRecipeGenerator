@@ -4,78 +4,105 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WorldMap Recipe Generator</title>
+  <title>Regional Recipe Generator</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="style.css">
 
 </head>
 
-<body class="hero">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<body>
+
   <nav>
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">Recipe Generator</a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="index.html">Home</a></li>
-        <li><a href="map.html">World Recipes</a></li>
+        <li><a href="#">World Recipes</a></li>
         <li><a href="advanced.html">Advanced</a></li>
         <li><a href="savedrecipes.html">Saved</a></li>
       </ul>
     </div>
   </nav>
-  <div class="container">
-    <p class="mapTitle flow-text">Click on the map or select a region to view recipes from regions around the world!
-    </p>
-  </div>
+  <ul class="sidenav" id="mobile-demo">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#">World Recipes</a></li>
+    <li><a href="advanced.html">Advanced</a></li>
+    <li><a href="savedrecipes.html">Saved</a></li>
+  </ul>
 
-  <div class="container">
-    <div class="row">
-      <a class='dropdown-trigger btn col s2 push-s5 regionButton' href='#' data-target='dropdown-countries'>Select a Region!</a>
-      <ul id='dropdown-countries' class='dropdown-content'>
-        <li><a data-country="American">American</a></li>
-        <li><a data-country="British">British</a></li>
-        <li><a data-country="Canadian">Canadian</a></li>
-        <li><a data-country="Chinese">Chinese</a></li>
-        <li><a data-country="Dutch">Dutch</a></li>
-        <li><a data-country="Egyptian">Egyptian</a></li>
-        <li><a data-country="French">French</a></li>
-        <li><a data-country="Greek">Greek</a></li>
-        <li><a data-country="Indian">Indian</a></li>
-        <li><a data-country="Irish">Irish</a></li>
-        <li><a data-country="Italian">Italian</a></li>
-        <li><a data-country="Jamaican">Jamaican</a></li>
-        <li><a data-country="Japanese">Japanese</a></li>
-        <li><a data-country="Kenyan">Kenyan</a></li>
-        <li><a data-country="Malaysian">Malaysian</a></li>
-        <li><a data-country="Mexican">Mexican</a></li>
-        <li><a data-country="Moroccan">Moroccan</a></li>
-        <li><a data-country="Polish">Polish</a></li>
-        <li><a data-country="Russian">Russian</a></li>
-        <li><a data-country="Spanish">Spanish</a></li>
-        <li><a data-country="Thai">Thai</a></li>
-        <li><a data-country="Tunisian">Tunisian</a></li>
-        <li><a data-country="Turkish">Turkish</a></li>
-        <li><a data-country="Vietnamese">Vietnamese</a></li>
-        <li><a data-country="Unknown">Unknown</a></li>
 
-      </ul>
+  <div class="hero">
+    <div class="container" id="searchStyle">
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <h2 id="indexTitle">World Recipes</h2>
+            <p class="mapTitle flow-text">Click on the map or select a region to view recipes from regions around the
+              world.
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <img id="map" class="mapImage" name="map" src="map.jpg" alt="Map of Earth" width="900px" height="600px"
-    onclick="clickMapImage(event);" />
+    <div class="container">
+      <div class="row">
+        <a class='dropdown-trigger btn col s2 push-s5 regionButton' href='#'
+          data-target='dropdown-countries'>Regions</a>
+        <ul id='dropdown-countries' class='dropdown-content'>
+          <li><a data-country="American">American</a></li>
+          <li><a data-country="British">British</a></li>
+          <li><a data-country="Canadian">Canadian</a></li>
+          <li><a data-country="Chinese">Chinese</a></li>
+          <li><a data-country="Dutch">Dutch</a></li>
+          <li><a data-country="Egyptian">Egyptian</a></li>
+          <li><a data-country="French">French</a></li>
+          <li><a data-country="Greek">Greek</a></li>
+          <li><a data-country="Indian">Indian</a></li>
+          <li><a data-country="Irish">Irish</a></li>
+          <li><a data-country="Italian">Italian</a></li>
+          <li><a data-country="Jamaican">Jamaican</a></li>
+          <li><a data-country="Japanese">Japanese</a></li>
+          <li><a data-country="Kenyan">Kenyan</a></li>
+          <li><a data-country="Malaysian">Malaysian</a></li>
+          <li><a data-country="Mexican">Mexican</a></li>
+          <li><a data-country="Moroccan">Moroccan</a></li>
+          <li><a data-country="Polish">Polish</a></li>
+          <li><a data-country="Russian">Russian</a></li>
+          <li><a data-country="Spanish">Spanish</a></li>
+          <li><a data-country="Thai">Thai</a></li>
+          <li><a data-country="Tunisian">Tunisian</a></li>
+          <li><a data-country="Turkish">Turkish</a></li>
+          <li><a data-country="Vietnamese">Vietnamese</a></li>
+          <li><a data-country="Unknown">Unknown</a></li>
 
-  <div class="container">
-    <div class="row">
-      <div id="note"></div>
-      <ul id="recipe-container" class="collapsible expandable"></ul>
+        </ul>
+      </div>
+
+      <img id="map" class="mapImage responsive-img" name="map" src="map.jpg" alt="Map of Earth" width="900px" height="600px"
+        onclick="clickMapImage(event);" />
+
+      <div class="container" id="resultStyle">
+        <div class="row fullrow">
+          <div id="note">Click Recipes to Uncollapse</div>
+          <ul id="recipe-container" class="collapsible expandable"></ul>
+        </div>
+      </div>
+
     </div>
   </div>
 
 </body>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script>
+  //Materilize function for navbar
+  $(document).ready(function () {
+    $('.sidenav').sidenav();
+  });
+
   //global variables
   var ingredientsArr = []
   var measuresArr = []
@@ -297,8 +324,7 @@
     //Create and append image using recipe image
     var image = $("<img>");
     image.attr("src", foodImage);
-    image.attr("width", "300px");
-    image.attr("height", "300px");
+    image.addClass("responsive-img");
     left.append(image);
 
     //Create and append "Ingredients" title
@@ -433,10 +459,10 @@
 
       }
 
-     
 
-    //reset allInfoArr
-    allInfoArr = []
+
+      //reset allInfoArr
+      allInfoArr = []
 
 
     });
@@ -444,30 +470,30 @@
 
 
   //Stores an object into an array saved to localStorage
-  function addObjectToSavedArray(object){
+  function addObjectToSavedArray(object) {
     //If storage is currently empty, it makes a new array pushes the object to that
-  if (localStorage.getItem("savedRecipes") === null){
-    storedRecipeArray = []
-    storedRecipeArray.push(object)
-    storedRecipeArray = JSON.stringify(storedRecipeArray)
-    localStorage.setItem("savedRecipes", storedRecipeArray)
+    if (localStorage.getItem("savedRecipes") === null) {
+      storedRecipeArray = []
+      storedRecipeArray.push(object)
+      storedRecipeArray = JSON.stringify(storedRecipeArray)
+      localStorage.setItem("savedRecipes", storedRecipeArray)
+    }
+    //Otherwise it parses the current array in localStorage and pushes the object into it.
+    else {
+      storedRecipeArray = JSON.parse(localStorage.getItem("savedRecipes"))
+      storedRecipeArray.push(object)
+      storedRecipeArray = JSON.stringify(storedRecipeArray)
+      localStorage.setItem("savedRecipes", storedRecipeArray)
+    }
   }
-  //Otherwise it parses the current array in localStorage and pushes the object into it.
-  else{
-  storedRecipeArray = JSON.parse(localStorage.getItem("savedRecipes"))
-  storedRecipeArray.push(object)
-  storedRecipeArray = JSON.stringify(storedRecipeArray)
-  localStorage.setItem("savedRecipes", storedRecipeArray)
-  }
-}
 
 
-//Creates an event listener for the save buttons
-$(document).on("click", ".saveBtn", function(){
-//Stores the recipeString attribute assosciated with whichever save button was as an object into the array of stored recipes
-selectedRecipe = JSON.parse($(this).attr("recipeString"))
-addObjectToSavedArray(selectedRecipe)
-})
+  //Creates an event listener for the save buttons
+  $(document).on("click", ".saveBtn", function () {
+    //Stores the recipeString attribute assosciated with whichever save button was as an object into the array of stored recipes
+    selectedRecipe = JSON.parse($(this).attr("recipeString"))
+    addObjectToSavedArray(selectedRecipe)
+  })
 
 
 
