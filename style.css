@@ -5,23 +5,21 @@ a:link {
     
 }
 
-/**/
+/*Height of Recipe Results*/
 .fullrow {
-    min-height: 100vh;
+    min-height: 10vh;
 }
 
-/**/
 .searchBox {
     margin-top: 10px;
 }
 
-/**/
 .collapsibleStyle {
     margin-right: 10%;
     margin-left: 10%;
 }
 
-/**/
+/*Helpful Note for collapsible style*/
 #note {
     text-align: center;
     font-size: 16px;
@@ -43,15 +41,18 @@ a:link {
     text-align: center;
 }
 
+/*Advanced Page*/
 .excludedIngredints {
     display: inline;
     text-align: center;
 }
 
+/*Advanced Page*/
 #excludedList {
     display: inline;
 }
 
+/*Advanced Page*/
 .advancedFilters {
     border: solid;
     margin-top: 40px;
@@ -60,29 +61,35 @@ a:link {
     margin-bottom: 5%;
 }
 
+/*Advanced Page*/
 .addTo {
     margin-left: 2%;
     text-align: left;
 }
 
+/*Advanced Page*/
 .healthLabels {
     margin-left: 1%;
 }
 
+/*Advanced Page*/
 .diet {
     margin-left: 1%;
 }
 
+/*Advanced Page*/
 #excludedListTitle {
     font-size: 20px;
     margin-bottom: 50px;
 }
 
+/*Advanced Page*/
 #advancedPageTitle {
     text-align: center;
     font-size: 25px;
 }
 
+/*Advanced Page*/
 .excludedListing {
     margin-top: -5%;
 }
