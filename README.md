@@ -12,5 +12,4 @@ HTML, CSS, JavaScript, Materialize CSS Framework, Positionstack API, Edamam Reci
 ## Screenshot
 ![Screenshot](https://github.com/EgiVilza/NutritiousRecipeGenerator/blob/main/Assets/NRGscreenshot1.png?raw=true)
 ![Screenshot](https://github.com/EgiVilza/NutritiousRecipeGenerator/blob/main/Assets/NRGscreenshot2.png?raw=true)
-![Screenshot](https://github.com/EgiVilza/NutritiousRecipeGenerator/blob/main/Assets/NRGscreenshot3.png?raw=true)
 ![Screenshot](https://github.com/EgiVilza/NutritiousRecipeGenerator/blob/main/Assets/NRGscreenshot4.png?raw=true)
