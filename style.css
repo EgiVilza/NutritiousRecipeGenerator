@@ -136,3 +136,7 @@ a:link {
     margin-right: 10%;
     margin-left: 10%;
 }
+
+.nav-wrapper {
+    padding-left: 20px
+}
