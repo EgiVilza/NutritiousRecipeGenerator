@@ -144,8 +144,9 @@
     //user input
     var coordString = latitude + "," + longitude
     //appID and key
-    var key = "ec16e811d654f74e28ffe0acccf5a092"
-    var queryURLMap = "https://api.positionstack.com/v1/reverse?access_key=" + key + "&query=" + coordString
+    //Old Api Key ec16e811d654f74e28ffe0acccf5a092
+    var key = "2a9918933890e4ce3accd65218fffc26"
+    var queryURLMap = "http://api.positionstack.com/v1/forward?access_key=" + key + "&query=" + coordString
     //              http://api.positionstack.com/v1/reverse?access_key=ec16e811d654f74e28ffe0acccf5a092&query=40.7638435,-73.9729691
     $.ajax({
       url: queryURLMap,
