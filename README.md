@@ -7,11 +7,11 @@ This project is a web application that allows users to quickly display recipes f
 
 * [Screenshots](#screenshots)
 
-* [Page Link](#projectlink)
+* [Page Link](#page-ink)
 
 * [Video](#video)
 
-* [Technologies Used](#technologiesused)
+* [Technologies Used](#technologies-used)
 
 ## Screenshots
 ![Screenshot](https://github.com/EgiVilza/NutritiousRecipeGenerator/blob/main/Assets/NRGscreenshot1.png?raw=true)
