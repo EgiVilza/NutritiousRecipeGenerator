@@ -7,7 +7,7 @@ This project is a web application that allows users to quickly display recipes f
 
 * [Screenshots](#screenshots)
 
-* [Page Link](#page-ink)
+* [Page Link](#page-link)
 
 * [Video](#video)
 
